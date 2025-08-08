@@ -27,7 +27,7 @@ import {
   Heart
 } from 'lucide-react';
 import Link from 'next/link';
-import { getCurrentUser, onAuthStateChange, AuthUser } from '@/lib/firebase-secure';
+import { getCurrentUser, onAuthStateChange, AuthUser, handleRedirectResult } from '@/lib/firebase-secure';
 import Logo from '@/components/Logo';
 import { usePerformance } from '@/hooks/usePerformance';
 
@@ -47,8 +47,28 @@ export default function MainLandingPage() {
   const { trackUserInteraction } = usePerformance();
 
   useEffect(() => {
+    // Handle redirect result first
+    const handleAuthRedirect = async () => {
+      try {
+        const result = await handleRedirectResult();
+        if (result.user) {
+          setUser(result.user);
+          if (!result.user.user_type) {
+            setShowProfileSetup(true);
+          }
+        } else if (result.error) {
+          console.error('Redirect result error:', result.error);
+        }
+      } catch (error) {
+        console.error('Error handling redirect result:', error);
+      }
+    };
+
     // Check current user on mount
     getCurrentUser().then(setUser);
+
+    // Handle redirect result
+    handleAuthRedirect();
 
     // Listen for auth state changes
     const unsubscribe = onAuthStateChange((user) => {

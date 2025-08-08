@@ -29,14 +29,20 @@ export default function GoogleSignInButton({
       const result = await signInWithGoogle();
       
       if (result.error) {
+        setIsLoading(false);
         onError?.(result.error);
-      } else {
+      } else if (result.user) {
+        // Popup flow succeeded
+        setIsLoading(false);
         onSuccess?.();
+      } else {
+        // Redirect flow - user will be redirected, so we don't call onSuccess here
+        // The success will be handled when they return via handleRedirectResult
+        // Note: We don't set isLoading to false here because the page will redirect
       }
     } catch (error) {
-      onError?.('Failed to sign in with Google');
-    } finally {
       setIsLoading(false);
+      onError?.('Failed to sign in with Google');
     }
   };
 
@@ -82,6 +88,11 @@ export default function GoogleSignInButton({
       >
         {isLoading ? 'Signing in...' : 'Continue with Google'}
       </span>
+      {isLoading && (
+        <div className="text-xs text-gray-500 mt-1">
+          Redirecting to Google...
+        </div>
+      )}
     </motion.button>
   );
 } 

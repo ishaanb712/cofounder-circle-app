@@ -15,6 +15,7 @@ console.log('Firebase config check:');
 console.log('API Key exists:', !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 console.log('Auth Domain exists:', !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
 console.log('Project ID exists:', !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
+console.log('API Base URL:', process.env.NEXT_PUBLIC_API_URL);
 
 // Check if required environment variables are set
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 
@@ -33,6 +34,75 @@ googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
 
+// Helper function to handle user profile creation and session
+const handleUserProfileAndSession = async (user: any) => {
+  try {
+    const idToken = await user.getIdToken();
+    
+    // Check if user profile exists
+    const profileCheckResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/me`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${idToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (profileCheckResponse.status === 404) {
+      // Profile doesn't exist, create it
+      const profileData = {
+        user_id: user.uid,
+        email: user.email || '',
+        full_name: user.displayName || '',
+        avatar_url: user.photoURL || '',
+        google_id: user.uid,
+        user_type: 'student' // Default type, can be updated later
+      };
+      
+      const profileResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/create`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${idToken}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(profileData)
+      });
+      
+      if (profileResponse.ok) {
+        console.log('User profile created successfully');
+      } else {
+        console.warn('Failed to create user profile:', profileResponse.status);
+      }
+    } else if (profileCheckResponse.ok) {
+      console.log('User profile already exists');
+    } else {
+      console.warn('Error checking user profile:', profileCheckResponse.status);
+    }
+    
+    // Create session
+    const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${idToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (sessionResponse.ok) {
+      const sessionData = await sessionResponse.json();
+      console.log('Session created automatically:', sessionData);
+      
+      if (sessionData.session_token) {
+        localStorage.setItem('session_token', sessionData.session_token);
+      }
+    } else {
+      console.warn('Failed to create session automatically:', sessionResponse.status);
+    }
+  } catch (sessionError) {
+    console.warn('Session creation failed:', sessionError);
+  }
+};
+
 export interface AuthUser {
   id: string;
   email: string;
@@ -50,94 +120,53 @@ export interface SignInResult {
 // Real Firebase functions for authentication only
 export const signInWithGoogle = async (): Promise<SignInResult> => {
   try {
-    console.log('Starting Google sign-in popup (debug mode)...');
+    console.log('Starting Google sign-in...');
     console.log('Auth domain:', process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
     console.log('Current URL:', window.location.href);
     
-    // Use popup for debugging
-    const result = await signInWithPopup(auth, googleProvider);
-    console.log('Sign-in successful:', result.user);
-    
-    const authUser: AuthUser = {
-      id: result.user.uid,
-      email: result.user.email || '',
-      full_name: result.user.displayName || '',
-      avatar_url: result.user.photoURL || '',
-      google_id: result.user.providerData[0]?.uid || '',
-      user_type: 'student' // Default user type
-    };
-    
-    // Handle profile creation and session
+    // Try popup first, fallback to redirect if blocked
     try {
-      const idToken = await result.user.getIdToken();
+      console.log('Attempting popup sign-in...');
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Popup sign-in successful:', result.user);
       
-      // Check if user profile exists
-      const profileCheckResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      const authUser: AuthUser = {
+        id: result.user.uid,
+        email: result.user.email || '',
+        full_name: result.user.displayName || '',
+        avatar_url: result.user.photoURL || '',
+        google_id: result.user.providerData[0]?.uid || '',
+        user_type: 'student' // Default user type
+      };
       
-      if (profileCheckResponse.status === 404) {
-        // Profile doesn't exist, create it
-        const profileData = {
-          user_id: result.user.uid,
-          email: result.user.email || '',
-          full_name: result.user.displayName || '',
-          avatar_url: result.user.photoURL || '',
-          google_id: result.user.uid,
-          user_type: 'student' // Default type, can be updated later
+      // Handle profile creation and session
+      await handleUserProfileAndSession(result.user);
+      
+      return {
+        user: authUser,
+        error: null
+      };
+    } catch (popupError: any) {
+      console.log('Popup failed, trying redirect:', popupError.message);
+      
+      // Check if it's a popup blocked error
+      if (popupError.code === 'auth/popup-blocked' || 
+          popupError.code === 'auth/popup-closed-by-user' ||
+          popupError.message.includes('popup')) {
+        
+        console.log('Popup blocked, using redirect...');
+        await signInWithRedirect(auth, googleProvider);
+        
+        // The function will redirect, so we return a pending result
+        return {
+          user: null,
+          error: null
         };
-        
-        const profileResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/create`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(profileData)
-        });
-        
-        if (profileResponse.ok) {
-          console.log('User profile created successfully');
-        } else {
-          console.warn('Failed to create user profile:', profileResponse.status);
-        }
-      } else if (profileCheckResponse.ok) {
-        console.log('User profile already exists');
       } else {
-        console.warn('Error checking user profile:', profileCheckResponse.status);
+        // Re-throw other errors
+        throw popupError;
       }
-      
-      // Create session
-      const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (sessionResponse.ok) {
-        const sessionData = await sessionResponse.json();
-        console.log('Session created automatically:', sessionData);
-        
-        if (sessionData.session_token) {
-          localStorage.setItem('session_token', sessionData.session_token);
-        }
-      } else {
-        console.warn('Failed to create session automatically:', sessionResponse.status);
-      }
-    } catch (sessionError) {
-      console.warn('Session creation failed:', sessionError);
     }
-    
-    return {
-      user: authUser,
-      error: null
-    };
   } catch (error: any) {
     console.error('Google sign-in error:', error);
     console.error('Error details:', {
@@ -176,73 +205,8 @@ export const handleRedirectResult = async (): Promise<SignInResult> => {
       user_type: 'student' // Default user type
     };
     
-    // First, create user profile if it doesn't exist
-    try {
-      const idToken = await user.getIdToken();
-      
-      // Check if user profile exists
-      const profileCheckResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (profileCheckResponse.status === 404) {
-        // Profile doesn't exist, create it
-        const profileData = {
-          user_id: user.uid,
-          email: user.email || '',
-          full_name: user.displayName || '',
-          avatar_url: user.photoURL || '',
-          google_id: user.uid,
-          user_type: 'student' // Default type, can be updated later
-        };
-        
-        const profileResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/create`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(profileData)
-        });
-        
-        if (profileResponse.ok) {
-          console.log('User profile created successfully');
-        } else {
-          console.warn('Failed to create user profile:', profileResponse.status);
-        }
-      } else if (profileCheckResponse.ok) {
-        console.log('User profile already exists');
-      } else {
-        console.warn('Error checking user profile:', profileCheckResponse.status);
-      }
-      
-      // Now create session after ensuring profile exists
-      const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${idToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (sessionResponse.ok) {
-        const sessionData = await sessionResponse.json();
-        console.log('Session created automatically:', sessionData);
-        
-        // Store session token in localStorage for logout
-        if (sessionData.session_token) {
-          localStorage.setItem('session_token', sessionData.session_token);
-        }
-      } else {
-        console.warn('Failed to create session automatically:', sessionResponse.status);
-      }
-    } catch (sessionError) {
-      console.warn('Session creation failed:', sessionError);
-    }
+    // Handle profile creation and session
+    await handleUserProfileAndSession(user);
     
     return {
       user: authUser,
