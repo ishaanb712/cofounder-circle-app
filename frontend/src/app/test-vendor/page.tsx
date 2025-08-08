@@ -8,7 +8,7 @@ export default function TestVendorForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<any>(null);
 
-  const handleComplete = (data: any) => {
+  const handleComplete = async (data: any) => {
     console.log('Vendor form completed:', data);
     setFormData(data);
   };

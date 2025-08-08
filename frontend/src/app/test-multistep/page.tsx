@@ -8,7 +8,7 @@ export default function TestMultiStepForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<any>(null);
 
-  const handleComplete = (data: any) => {
+  const handleComplete = async (data: any) => {
     console.log('Form completed:', data);
     setFormData(data);
   };

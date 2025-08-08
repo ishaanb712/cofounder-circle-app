@@ -8,7 +8,7 @@ export default function TestWorkingProfessionalForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<any>(null);
 
-  const handleComplete = (data: any) => {
+  const handleComplete = async (data: any) => {
     console.log('Working Professional form completed:', data);
     setFormData(data);
   };
