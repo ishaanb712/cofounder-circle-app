@@ -54,6 +54,9 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
     console.log('Auth domain:', process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
     console.log('Current URL:', window.location.href);
     
+    // Add a delay to capture any errors before redirect
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     // Use redirect instead of popup
     await signInWithRedirect(auth, googleProvider);
     
@@ -71,6 +74,8 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
       message: error.message,
       stack: error.stack
     });
+    
+    // Prevent redirect on error so we can see the error
     return {
       user: null,
       error: error.message || 'Failed to sign in with Google'
