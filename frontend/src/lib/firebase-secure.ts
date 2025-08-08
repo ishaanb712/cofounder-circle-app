@@ -70,9 +70,12 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
 // Handle redirect result
 export const handleRedirectResult = async (): Promise<SignInResult> => {
   try {
+    console.log('Getting redirect result...');
     const result = await getRedirectResult(auth);
+    console.log('Raw redirect result:', result);
     
     if (!result) {
+      console.log('No redirect result found');
       return { user: null, error: null };
     }
     

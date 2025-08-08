@@ -10,19 +10,28 @@ export const useAuth = () => {
   useEffect(() => {
     // Handle redirect result on mount
     const handleRedirect = async () => {
+      console.log('Checking for redirect result...');
       const result = await handleRedirectResult();
+      console.log('Redirect result:', result);
       if (result.user) {
+        console.log('Setting user from redirect result:', result.user);
         setUser(result.user);
+      } else if (result.error) {
+        console.error('Redirect result error:', result.error);
       }
     };
     
     handleRedirect();
 
     // Check current user on mount
-    getCurrentUser().then(setUser);
+    getCurrentUser().then((user) => {
+      console.log('Current user from getCurrentUser:', user);
+      setUser(user);
+    });
 
     // Listen for auth state changes
     const unsubscribe = onAuthStateChange((user) => {
+      console.log('Auth state changed:', user);
       setUser(user);
     });
 
