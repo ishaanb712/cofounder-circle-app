@@ -96,7 +96,23 @@ async def test_endpoint():
     print("Backend is receiving requests!")
     return {
         "message": "Test endpoint working",
-        "timestamp": "2024-01-01T00:00:00Z"
+        "timestamp": "2024-01-01T00:00:00Z",
+        "server_ip": "192.168.1.101",
+        "hostname": "G3-MBP-1227.local"
+    }
+
+@app.get("/mobile-test")
+async def mobile_test():
+    """Test endpoint specifically for mobile connectivity"""
+    return {
+        "status": "success",
+        "message": "Mobile connectivity test successful",
+        "timestamp": "2024-01-01T00:00:00Z",
+        "server_info": {
+            "ip": "192.168.1.101",
+            "hostname": "G3-MBP-1227.local",
+            "port": 8000
+        }
     }
 
 @app.get("/test-supabase")
