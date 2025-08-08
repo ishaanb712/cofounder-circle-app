@@ -50,8 +50,14 @@ export interface SignInResult {
 // Real Firebase functions for authentication only
 export const signInWithGoogle = async (): Promise<SignInResult> => {
   try {
+    console.log('Starting Google sign-in redirect...');
+    console.log('Auth domain:', process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
+    console.log('Current URL:', window.location.href);
+    
     // Use redirect instead of popup
     await signInWithRedirect(auth, googleProvider);
+    
+    console.log('Redirect initiated successfully');
     
     // The redirect will happen, so we return a pending state
     return {
@@ -60,6 +66,11 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
     };
   } catch (error: any) {
     console.error('Google sign-in error:', error);
+    console.error('Error details:', {
+      code: error.code,
+      message: error.message,
+      stack: error.stack
+    });
     return {
       user: null,
       error: error.message || 'Failed to sign in with Google'
