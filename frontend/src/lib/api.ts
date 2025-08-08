@@ -1,7 +1,30 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Detect if we're on mobile and adjust API URL accordingly
+const getApiBaseUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl) return envUrl;
+  
+  // If no environment URL is set, try to detect the correct URL for mobile
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const port = '8000'; // Backend port
+    
+    // If we're on localhost, use localhost
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return `http://localhost:${port}`;
+    }
+    
+    // If we're on a mobile device or different host, use the same hostname
+    return `http://${hostname}:${port}`;
+  }
+  
+  return 'http://localhost:8000';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 console.log('API Base URL:', API_BASE_URL);
 console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+console.log('Current hostname:', typeof window !== 'undefined' ? window.location.hostname : 'server-side');
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -49,9 +72,22 @@ class ApiClient {
       };
     } catch (error) {
       console.error('API Error:', error);
+      
+      // Provide more specific error messages for mobile
+      let errorMessage = 'Network error';
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          errorMessage = 'Unable to connect to server. Please check your internet connection and try again.';
+        } else if (error.message.includes('timeout')) {
+          errorMessage = 'Request timed out. Please try again.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Network error',
+        error: errorMessage,
       };
     }
   }

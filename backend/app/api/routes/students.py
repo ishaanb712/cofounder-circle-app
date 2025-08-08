@@ -3,7 +3,7 @@ from app.schemas.student import StudentCreate, StudentUpdate, StudentResponse
 from app.services.student_service import student_service
 from app.core.auth import get_current_user
 from app.schemas.user import TokenData
-from typing import List
+from typing import List, Dict, Any
 import uuid
 from datetime import datetime
 
@@ -102,6 +102,42 @@ async def update_student(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update student: {str(e)}"
+        )
+
+@router.post("/progress")
+async def save_student_progress(
+    progress_data: Dict[str, Any]
+):
+    """Save student form progress"""
+    try:
+        user_id = progress_data.get("user_id")
+        step = progress_data.get("step")
+        data = progress_data.get("data")
+        
+        if not user_id or not step:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="user_id and step are required"
+            )
+        
+        print(f"Saving progress for user {user_id}, step {step}: {data}")
+        
+        # For now, just log the progress (you can implement actual storage later)
+        # In a real implementation, you would save this to a database
+        print(f"Progress saved: User {user_id} completed step {step}")
+        
+        return {
+            "success": True,
+            "message": f"Progress saved for step {step}",
+            "user_id": user_id,
+            "step": step
+        }
+        
+    except Exception as e:
+        print(f"Error saving progress: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to save progress: {str(e)}"
         )
 
 @router.get("/", response_model=List[StudentResponse])

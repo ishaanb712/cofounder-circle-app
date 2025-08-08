@@ -90,6 +90,7 @@ export default function StudentMultiStepForm({
 }: StudentMultiStepFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [networkError, setNetworkError] = useState<string | null>(null);
   const [formData, setFormData] = useState<StudentFormData>({
     name: '',
     email: '',
@@ -132,8 +133,7 @@ export default function StudentMultiStepForm({
   // Mock function to save step progress (Firebase commented out)
   const saveStepProgress = async (step: string, data: any) => {
     try {
-      // Mock: Simulate saving progress
-      console.log(`Mock: Saving progress for step ${step}:`, data);
+      console.log(`Saving progress for step ${step}:`, data);
       
       // Update local progress state
       setProgress(prev => ({
@@ -141,14 +141,36 @@ export default function StudentMultiStepForm({
         [step]: 'completed'
       }));
       
-      // In real implementation, this would call Firebase:
-      // await updateUserProfile(userId, {
-      //   [`form_progress.${step}`]: 'completed',
-      //   [step]: data
-      // });
+      // Make API call to save progress
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/students/progress`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          step: step,
+          data: data
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      console.log(`Progress saved successfully for step ${step}`);
       
     } catch (error) {
       console.error('Error saving progress:', error);
+      
+      // For mobile, provide user-friendly error message
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          throw new Error('Unable to connect to server. Please check your internet connection and try again.');
+        }
+      }
+      
+      throw error;
     }
   };
 
@@ -156,9 +178,17 @@ export default function StudentMultiStepForm({
     if (currentStep < totalSteps) {
       // Save current step progress
       const stepData = getStepData(currentStep);
-      await saveStepProgress(getStepKey(currentStep), stepData);
-      
-      setCurrentStep(prev => prev + 1);
+      try {
+        setNetworkError(null);
+        await saveStepProgress(getStepKey(currentStep), stepData);
+        setCurrentStep(prev => prev + 1);
+      } catch (error) {
+        console.error('Error saving step progress:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        setNetworkError(errorMessage);
+        // Show error to user (you could add a toast notification here)
+        alert(`Error saving progress: ${errorMessage}`);
+      }
     } else {
       // Complete the form
       setIsSubmitting(true);
@@ -167,6 +197,8 @@ export default function StudentMultiStepForm({
         onComplete?.(formData);
       } catch (error) {
         console.error('Error submitting form:', error);
+        // Show error to user
+        alert(`Error submitting form: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setIsSubmitting(false);
       }
@@ -300,6 +332,18 @@ export default function StudentMultiStepForm({
         </div>
       </div>
 
+      {/* Network Error Display */}
+      {networkError && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-sm text-red-600">
+            <strong>Network Error:</strong> {networkError}
+          </p>
+          <p className="text-xs text-red-500 mt-1">
+            Please check your internet connection and try again.
+          </p>
+        </div>
+      )}
+
       {/* Form Content */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -317,11 +361,13 @@ export default function StudentMultiStepForm({
       <div className="flex justify-between mt-6 md:mt-8">
         <button
           onClick={handlePrevious}
+          onTouchStart={(e) => e.preventDefault()}
           disabled={currentStep === 1}
-          className="flex items-center px-3 md:px-6 py-2 md:py-3 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+          className="flex items-center px-3 md:px-6 py-2 md:py-3 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base touch-manipulation"
           style={{
             fontFamily: 'var(--font-roboto), sans-serif',
-            fontWeight: 500
+            fontWeight: 500,
+            WebkitTapHighlightColor: 'transparent'
           }}
         >
           <ChevronLeft className="w-4 h-4 mr-1 md:mr-2" />
@@ -331,11 +377,13 @@ export default function StudentMultiStepForm({
         
         <button
           onClick={handleNext}
+          onTouchStart={(e) => e.preventDefault()}
           disabled={!canProceed() || isSubmitting}
-          className="flex items-center px-3 md:px-6 py-2 md:py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+          className="flex items-center px-3 md:px-6 py-2 md:py-3 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base touch-manipulation"
           style={{
             fontFamily: 'var(--font-roboto), sans-serif',
-            fontWeight: 500
+            fontWeight: 500,
+            WebkitTapHighlightColor: 'transparent'
           }}
         >
           {isSubmitting ? (
