@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Briefcase, CheckCircle } from 'lucide-react';
 import WorkingProfessionalMultiStepForm from './WorkingProfessionalMultiStepForm';
+import { generateSecureUUID } from '@/lib/utils';
 
 interface WorkingProfessionalRegistrationModalProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ export default function WorkingProfessionalRegistrationModal({ isOpen, onClose }
 
     try {
       // Generate a proper UUID for the form submission
-      const userId = crypto.randomUUID();
+      const userId = generateSecureUUID();
       
       // Clean up the form data - remove empty strings and ensure proper types
       const cleanedFormData = {
@@ -57,7 +58,7 @@ export default function WorkingProfessionalRegistrationModal({ isOpen, onClose }
       
       console.log('📤 Request body being sent:', requestBody);
       
-      const response = await fetch('http://localhost:8000/api/working-professionals/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/working-professionals/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

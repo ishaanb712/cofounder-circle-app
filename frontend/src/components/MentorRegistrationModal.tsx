@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, GraduationCap, CheckCircle } from 'lucide-react';
 import MentorMultiStepForm from './MentorMultiStepForm';
+import { generateSecureUUID } from '@/lib/utils';
 
 interface MentorRegistrationModalProps {
   isOpen: boolean;
@@ -23,7 +24,7 @@ export default function MentorRegistrationModal({ isOpen, onClose }: MentorRegis
 
     try {
       // Generate a proper UUID for the form submission
-      const userId = crypto.randomUUID();
+      const userId = generateSecureUUID();
       
       // Clean up the form data - remove empty strings and ensure proper types
       const cleanedFormData = {
@@ -50,7 +51,7 @@ export default function MentorRegistrationModal({ isOpen, onClose }: MentorRegis
       
       console.log('📤 Request body being sent:', requestBody);
       
-      const response = await fetch('http://localhost:8000/api/mentors/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/mentors/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
