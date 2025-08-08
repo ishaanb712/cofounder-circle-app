@@ -5,11 +5,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:https": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
+    "start:https": "next start --experimental-https",
     "lint": "next lint",
     "analyze": "ANALYZE=true npm run build",
-    "lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
+    "lighthouse": "lighthouse https://localhost:3000 --output=html --output-path=./lighthouse-report.html",
     "performance": "npm run build && npm run lighthouse"
   },
   "dependencies": {

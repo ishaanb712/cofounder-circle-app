@@ -22,6 +22,21 @@ class COOPMiddleware(BaseHTTPMiddleware):
         response.headers["Cross-Origin-Opener-Policy"] = "same-origin-allow-popups"
         return response
 
+# Custom middleware for HTTPS security headers
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        
+        # HTTPS Security Headers
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+        
+        return response
+
 app = FastAPI(
     title="StartupConnect API",
     description="Backend API for StartupConnect platform connecting founders, investors, mentors, and service providers",
@@ -30,7 +45,10 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Add performance middleware first
+# Add security headers middleware first
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Add performance middleware
 app.add_middleware(PerformanceMiddleware)
 
 # Add COOP middleware
@@ -43,12 +61,20 @@ app.add_middleware(
         settings.FRONTEND_URL, 
         "http://localhost:3000",
         "http://localhost:3001",
+        "https://localhost:3000",
+        "https://localhost:3001",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:3001",
+        "https://127.0.0.1:3000",
+        "https://127.0.0.1:3001",
         "http://192.168.1.101:3000",
         "http://192.168.1.101:3001",
+        "https://192.168.1.101:3000",
+        "https://192.168.1.101:3001",
         "http://G3-MBP-1227.local:3000",
         "http://G3-MBP-1227.local:3001",
+        "https://G3-MBP-1227.local:3000",
+        "https://G3-MBP-1227.local:3001",
         "http://51.20.249.99",
         "http://51.20.249.99:3000",
         "https://51.20.249.99",
@@ -216,9 +242,29 @@ async def test_session_creation():
         }
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "app.main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    ) 
+    import uvicorn
+    
+    # Check if SSL certificates exist
+    ssl_keyfile = "ssl/private.key"
+    ssl_certfile = "ssl/certificate.crt"
+    
+    # Use HTTPS if certificates exist, otherwise HTTP
+    if os.path.exists(ssl_keyfile) and os.path.exists(ssl_certfile):
+        print("🔐 Starting server with HTTPS...")
+        uvicorn.run(
+            "app.main:app",
+            host="0.0.0.0",
+            port=8000,
+            reload=True,
+            ssl_keyfile=ssl_keyfile,
+            ssl_certfile=ssl_certfile
+        )
+    else:
+        print("🌐 Starting server with HTTP...")
+        print("💡 To enable HTTPS, run: ./generate-ssl-cert.sh")
+        uvicorn.run(
+            "app.main:app",
+            host="0.0.0.0",
+            port=8000,
+            reload=True
+        ) 
