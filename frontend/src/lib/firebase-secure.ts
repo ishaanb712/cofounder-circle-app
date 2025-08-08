@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, User } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signInWithRedirect, onAuthStateChanged, User, getRedirectResult } from 'firebase/auth';
 import { signOut as firebaseSignOut } from 'firebase/auth';
 import { apiClient } from './api';
 
@@ -50,7 +50,32 @@ export interface SignInResult {
 // Real Firebase functions for authentication only
 export const signInWithGoogle = async (): Promise<SignInResult> => {
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    // Use redirect instead of popup
+    await signInWithRedirect(auth, googleProvider);
+    
+    // The redirect will happen, so we return a pending state
+    return {
+      user: null,
+      error: null
+    };
+  } catch (error: any) {
+    console.error('Google sign-in error:', error);
+    return {
+      user: null,
+      error: error.message || 'Failed to sign in with Google'
+    };
+  }
+};
+
+// Handle redirect result
+export const handleRedirectResult = async (): Promise<SignInResult> => {
+  try {
+    const result = await getRedirectResult(auth);
+    
+    if (!result) {
+      return { user: null, error: null };
+    }
+    
     const user = result.user;
     
     const authUser: AuthUser = {
@@ -67,7 +92,7 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
       const idToken = await user.getIdToken();
       
       // Check if user profile exists
-      const profileCheckResponse = await fetch('http://127.0.0.1:8000/api/user-profiles/me', {
+      const profileCheckResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/me`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${idToken}`,
@@ -86,7 +111,7 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
           user_type: 'student' // Default type, can be updated later
         };
         
-        const profileResponse = await fetch('http://127.0.0.1:8000/api/user-profiles/create', {
+        const profileResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/create`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${idToken}`,
@@ -107,7 +132,7 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
       }
       
       // Now create session after ensuring profile exists
-      const sessionResponse = await fetch('http://127.0.0.1:8000/api/sessions/create', {
+      const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${idToken}`,
@@ -135,10 +160,10 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
       error: null
     };
   } catch (error: any) {
-    console.error('Google sign-in error:', error);
+    console.error('Redirect result error:', error);
     return {
       user: null,
-      error: error.message || 'Failed to sign in with Google'
+      error: error.message || 'Failed to complete sign in'
     };
   }
 };
@@ -155,7 +180,7 @@ export const signOut = async (): Promise<{ error: string | null }> => {
         const sessionToken = localStorage.getItem('session_token');
         
         if (sessionToken) {
-          const logoutResponse = await fetch('http://127.0.0.1:8000/api/sessions/logout', {
+          const logoutResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/logout`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${idToken}`,
@@ -266,7 +291,7 @@ export const createUserProfile = async (userId: string, userData: any) => {
     
     // Also create a session if profile creation was successful
     try {
-      const sessionResponse = await fetch('http://127.0.0.1:8000/api/sessions/create', {
+      const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${idToken}`,

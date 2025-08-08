@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCurrentUser, onAuthStateChange, AuthUser } from './firebase-secure';
+import { getCurrentUser, onAuthStateChange, AuthUser, handleRedirectResult } from './firebase-secure';
 import { AuthUtils } from './auth-utils';
 
 export const useAuth = () => {
@@ -8,6 +8,16 @@ export const useAuth = () => {
   const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
 
   useEffect(() => {
+    // Handle redirect result on mount
+    const handleRedirect = async () => {
+      const result = await handleRedirectResult();
+      if (result.user) {
+        setUser(result.user);
+      }
+    };
+    
+    handleRedirect();
+
     // Check current user on mount
     getCurrentUser().then(setUser);
 

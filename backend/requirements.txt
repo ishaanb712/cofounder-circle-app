@@ -8,3 +8,4 @@ firebase-admin==6.2.0
 pydantic>=2.7.4
 pydantic-settings>=2.4.0
 httpx>=0.26
+supabase>=2.0.0
