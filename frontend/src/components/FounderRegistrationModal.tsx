@@ -30,7 +30,7 @@ export default function FounderRegistrationModal({ isOpen, onClose }: FounderReg
 
       console.log('Submitting founder data:', requestData);
 
-      const response = await fetch('http://localhost:8000/api/founders/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/founders/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -105,7 +105,7 @@ export default function StudentRegistrationModal({ isOpen, onClose }: StudentReg
         console.log(`${field}: ${requestData[field as keyof typeof requestData]} (type: ${typeof requestData[field as keyof typeof requestData]})`);
       });
 
-      const response = await fetch('http://localhost:8000/api/students/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/students/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

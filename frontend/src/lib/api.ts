@@ -17,7 +17,8 @@ const getApiBaseUrl = () => {
     return `http://${hostname}:${port}`;
   }
   
-  return 'http://localhost:8000';
+  // Fallback for server-side rendering
+  return 'http://192.168.1.101:8000';
 };
 
 const API_BASE_URL = getApiBaseUrl();

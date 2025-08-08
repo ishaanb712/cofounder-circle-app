@@ -21,7 +21,7 @@ export default function VendorRegistrationModal({ isOpen, onClose }: VendorRegis
     setSubmitMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/vendors/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/vendors/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
