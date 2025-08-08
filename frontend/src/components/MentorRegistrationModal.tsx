@@ -86,19 +86,54 @@ export default function MentorRegistrationModal({ isOpen, onClose }: MentorRegis
         
         // Handle validation errors specifically
         if (response.status === 422) {
-          let errorMessage = 'Validation error: ';
+          let errorMessage = 'Please fix the following issues:';
           if (error.detail) {
             if (Array.isArray(error.detail)) {
-              errorMessage += error.detail.map((err: any) => err.msg).join(', ');
+              const errorList = error.detail.map((err: any) => {
+                // Make error messages more user-friendly
+                let field = err.loc ? err.loc[err.loc.length - 1] : '';
+                let message = err.msg || '';
+                
+                // Map technical field names to user-friendly names
+                const fieldMap: { [key: string]: string } = {
+                  'email': 'Email address',
+                  'phone': 'Phone number',
+                  'name': 'Full name',
+                  'organisation': 'Organization',
+                  'linkedin': 'LinkedIn URL',
+                  'city': 'City',
+                  'state': 'State',
+                  'focus_areas': 'Focus areas',
+                  'preferred_startup_stage': 'Preferred startup stage'
+                };
+                
+                field = fieldMap[field] || field;
+                
+                // Make error messages more user-friendly
+                if (message.includes('field required')) {
+                  message = `${field} is required`;
+                } else if (message.includes('value is not a valid email')) {
+                  message = `${field} must be a valid email address`;
+                } else if (message.includes('value is not a valid phone')) {
+                  message = `${field} must be a valid phone number`;
+                } else if (message.includes('ensure this value has at least')) {
+                  message = `${field} is too short`;
+                } else if (message.includes('ensure this value has at most')) {
+                  message = `${field} is too long`;
+                }
+                
+                return `• ${message}`;
+              });
+              errorMessage += '\n' + errorList.join('\n');
             } else {
-              errorMessage += error.detail;
+              errorMessage += '\n• ' + error.detail;
             }
           } else {
-            errorMessage += 'Please check your form data';
+            errorMessage += '\n• Please check your form data';
           }
-          setSubmitMessage(`Error: ${errorMessage}`);
+          setSubmitMessage(errorMessage);
         } else {
-          setSubmitMessage(`Error: ${error.detail || 'Something went wrong'}`);
+          setSubmitMessage(`Error: ${error.detail || 'Something went wrong. Please try again.'}`);
         }
       }
     } catch (error) {
@@ -154,6 +189,33 @@ export default function MentorRegistrationModal({ isOpen, onClose }: MentorRegis
                 <div className="flex items-center justify-center">
                   <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                   <span className="text-green-800 font-medium">Form submitted successfully!</span>
+                </div>
+              </div>
+            )}
+            
+            {/* Error Banner */}
+            {submitMessage && !submitMessage.includes('✅') && (
+              <div className="bg-red-50 border-b border-red-200 p-4">
+                <div className="flex items-start justify-center">
+                  <div className="flex-shrink-0">
+                    <svg className="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">Please fix the following issues:</h3>
+                    <div className="mt-2 text-sm text-red-700 whitespace-pre-line">
+                      {submitMessage.replace('Please fix the following issues:', '')}
+                    </div>
+                    <div className="mt-3">
+                      <button
+                        onClick={() => setSubmitMessage('')}
+                        className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
