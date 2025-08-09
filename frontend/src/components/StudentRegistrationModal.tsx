@@ -225,13 +225,9 @@ export default function StudentRegistrationModal({ isOpen, onClose }: StudentReg
 
               {/* Content */}
               <div className="p-4 md:p-6">
-                {/* Submit Message */}
-                {submitMessage && (
-                  <div className={`p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-sm md:text-base ${
-                    submitMessage.includes('Error') 
-                      ? 'bg-red-100 text-red-700' 
-                      : 'bg-green-100 text-green-700'
-                  }`}>
+                {/* Success Message Only - Hide errors from users */}
+                {submitMessage && submitMessage.includes('✅') && (
+                  <div className="p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-sm md:text-base bg-green-100 text-green-700">
                     {submitMessage}
                   </div>
                 )}

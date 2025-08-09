@@ -264,50 +264,13 @@ export default function MentorRegistrationModal({ isOpen, onClose }: MentorRegis
                 onStepChange={handleStepChange}
               />
               
-              {/* Debug: Show submitMessage for debugging */}
-              {submitMessage && (
-                <div className="mb-4 p-2 bg-yellow-100 text-yellow-800 text-xs">
-                  Debug - submitMessage: "{submitMessage}" | Length: {submitMessage.length} | Contains ✅: {submitMessage.includes('✅') ? 'YES' : 'NO'}
-                </div>
-              )}
-
-              {/* Error Message */}
-              {submitMessage && submitMessage.includes('Error') && (
-                <div className="p-4 rounded-lg mb-6 bg-red-100 text-red-700">
+              {/* Success Message Only - Hide errors from users */}
+              {submitMessage && submitMessage.includes('✅') && (
+                <div className="p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-sm md:text-base bg-green-100 text-green-700">
                   {submitMessage}
                 </div>
               )}
             </div>
-            
-            {/* Success Message Overlay - Moved outside content div for better mobile coverage */}
-            {submitMessage && submitMessage.includes('✅') && (
-              <div className="absolute inset-0 bg-white flex items-center justify-center z-50 rounded-2xl shadow-lg">
-                <div className="text-center p-6 max-w-sm mx-auto">
-                  <CheckCircle className="w-16 h-16 md:w-20 md:h-20 text-green-500 mx-auto mb-4" />
-                  <h3 
-                    className="text-xl md:text-2xl font-bold text-gray-900 mb-2"
-                    style={{
-                      fontFamily: 'var(--font-montserrat), sans-serif',
-                      fontWeight: 700
-                    }}
-                  >
-                    Form Submitted Successfully!
-                  </h3>
-                  <p 
-                    className="text-gray-600 text-sm md:text-base"
-                    style={{
-                      fontFamily: 'var(--font-roboto), sans-serif',
-                      fontWeight: 400
-                    }}
-                  >
-                    Thank you for registering with CoFounder Circle. We'll be in touch soon!
-                  </p>
-                  <div className="mt-4 text-xs text-gray-500">
-                    This window will close automatically...
-                  </div>
-                </div>
-              </div>
-            )}
           </motion.div>
         </div>
       )}

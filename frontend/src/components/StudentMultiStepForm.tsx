@@ -289,36 +289,16 @@ export default function StudentMultiStepForm({
 
   return (
     <div className="w-full max-w-lg mx-auto">
-      {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          {[1, 2, 3, 4].map((step) => (
-            <div key={step} className="flex items-center">
-              <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 ${
-                step <= currentStep 
-                  ? 'bg-indigo-600 border-indigo-600 text-white' 
-                  : 'bg-white border-gray-300 text-gray-500'
-              }`}>
-                {step < currentStep ? (
-                  <CheckCircle className="w-5 h-5" />
-                ) : (
-                  <span 
-                    className="text-sm font-medium"
-                    style={{
-                      fontFamily: 'var(--font-roboto), sans-serif',
-                      fontWeight: 500
-                    }}
-                  >
-                    {step}
-                  </span>
-                )}
-              </div>
-              {step < 4 && (
-                <div className={`w-16 h-1 mx-2 ${
-                  step < currentStep ? 'bg-indigo-600' : 'bg-gray-300'
-                }`} />
-              )}
-            </div>
+      {/* Step Indicator */}
+      <div className="flex justify-center mb-6 md:mb-8">
+        <div className="flex space-x-2">
+          {Array.from({ length: totalSteps }, (_, i) => (
+            <div
+              key={i + 1}
+              className={`w-3 h-3 rounded-full ${
+                i + 1 <= currentStep ? 'bg-indigo-600' : 'bg-gray-300'
+              }`}
+            />
           ))}
         </div>
         <div 
@@ -331,18 +311,6 @@ export default function StudentMultiStepForm({
           Step {currentStep} of {totalSteps}
         </div>
       </div>
-
-      {/* Network Error Display */}
-      {networkError && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-600">
-            <strong>Network Error:</strong> {networkError}
-          </p>
-          <p className="text-xs text-red-500 mt-1">
-            Please check your internet connection and try again.
-          </p>
-        </div>
-      )}
 
       {/* Form Content */}
       <AnimatePresence mode="wait">

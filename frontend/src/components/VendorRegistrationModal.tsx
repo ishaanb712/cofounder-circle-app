@@ -130,42 +130,20 @@ export default function VendorRegistrationModal({ isOpen, onClose }: VendorRegis
             </div>
 
             {/* Content */}
-            <div className="p-4 md:p-6 relative">
+            <div className="p-4 md:p-6">
+              {/* Success Message Only - Hide errors from users */}
+              {submitMessage && submitMessage.includes('✅') && (
+                <div className="p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-sm md:text-base bg-green-100 text-green-700">
+                  {submitMessage}
+                </div>
+              )}
+
               {/* Multi-Step Form */}
               <VendorMultiStepForm
                 userId="temp-user-id" // This will be replaced with actual user ID
                 onComplete={handleComplete}
                 onStepChange={handleStepChange}
               />
-              
-              {/* Success Message Overlay */}
-              {submitMessage && submitMessage.includes('✅') && (
-                <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10">
-                  <div className="text-center p-6">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 text-green-600" />
-                    </div>
-                    <h3 
-                      className="text-xl font-semibold text-gray-900 mb-2"
-                      style={{
-                        fontFamily: 'var(--font-montserrat), sans-serif',
-                        fontWeight: 700
-                      }}
-                    >
-                      Form Submitted Successfully!
-                    </h3>
-                    <p 
-                      className="text-gray-600"
-                      style={{
-                        fontFamily: 'var(--font-roboto), sans-serif',
-                        fontWeight: 400
-                      }}
-                    >
-                      Thank you for registering with CoFounder Circle.
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
           </motion.div>
         </div>

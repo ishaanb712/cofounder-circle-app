@@ -47,7 +47,7 @@ console.log('Current hostname:', typeof window !== 'undefined' ? window.location
 
 // Validate API URL format
 if (API_BASE_URL && API_BASE_URL.includes('::')) {
-  console.error('Invalid API URL format detected:', API_BASE_URL);
+  console.warn('Invalid API URL format detected:', API_BASE_URL);
 }
 
 export interface ApiResponse<T = any> {

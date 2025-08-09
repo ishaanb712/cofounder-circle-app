@@ -64,8 +64,8 @@ if (typeof window !== 'undefined') {
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 
     !process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 
     !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
-  console.error('Missing Firebase environment variables');
-  console.error('Please check your .env.local file and ensure all Firebase variables are set');
+  console.warn('Missing Firebase environment variables');
+  console.warn('Please check your .env.local file and ensure all Firebase variables are set');
 }
 
 // Initialize Firebase
