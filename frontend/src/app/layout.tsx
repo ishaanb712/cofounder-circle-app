@@ -5,18 +5,23 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: 'swap',
 });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
   weight: ["400", "500", "600", "700", "800", "900"],
+  display: 'swap',
+  preload: true,
 });
 
 const roboto = Roboto({
   subsets: ["latin"],
   variable: "--font-roboto",
   weight: ["400", "500", "700"],
+  display: 'swap',
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -43,6 +48,17 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
         <link rel="shortcut icon" href="/favicon.svg?v=2" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg?v=2" />
+        {/* Preload critical fonts for better LCP */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+          as="style"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `

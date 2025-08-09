@@ -18,3 +18,19 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* Font optimization for better LCP */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-display: swap;
+  }
+  
+  /* Optimize font loading for critical text */
+  .font-montserrat {
+    font-display: swap;
+  }
+  
+  .font-roboto {
+    font-display: swap;
+  }
+}

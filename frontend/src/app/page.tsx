@@ -300,7 +300,7 @@ export default function MainLandingPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.2 }}
             className="text-center"
           >
             <div className="flex justify-center mb-6">
@@ -308,13 +308,22 @@ export default function MainLandingPage() {
                 <Users className="w-10 h-10 text-indigo-600" />
               </div>
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+            {/* Critical LCP element - optimized for performance */}
+            <h1 
+              className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 font-montserrat"
+              style={{
+                fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                fontWeight: 900,
+                lineHeight: '1.1',
+                letterSpacing: '-0.02em'
+              }}
+            >
               Connect. Grow.{' '}
               <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                 Succeed.
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               The ultimate platform connecting students, founders, mentors, vendors, and professionals in one unified ecosystem.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
