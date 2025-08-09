@@ -42,13 +42,18 @@ export default function MainLandingPage() {
   const [showProfileSetup, setShowProfileSetup] = useState(false);
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   
   // Performance monitoring
   const { trackUserInteraction } = usePerformance();
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
     // Only run on client side
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !isClient) return;
 
     // Handle redirect result first
     const handleAuthRedirect = async () => {
@@ -84,7 +89,7 @@ export default function MainLandingPage() {
     });
 
     return unsubscribe;
-  }, []);
+  }, [isClient]);
 
   const handleSignInSuccess = () => {
     setShowSignInModal(false);
@@ -608,15 +613,15 @@ export default function MainLandingPage() {
               <ul className="space-y-2 text-gray-400">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  hello@cofoundercircle.com
+                  <span suppressHydrationWarning>hello@cofoundercircle.com</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  +1 (555) 123-4567
+                  <span suppressHydrationWarning>+1 (555) 123-4567</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
-                  San Francisco, CA
+                  <span suppressHydrationWarning>San Francisco, CA</span>
                 </li>
               </ul>
             </div>
@@ -628,22 +633,24 @@ export default function MainLandingPage() {
       </footer>
 
       {/* Sign In Modal */}
-      <Suspense fallback={<div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-      </div>}>
-        <SignInModal
-          isOpen={showSignInModal}
-          onClose={() => {
-            setShowSignInModal(false);
-            setPendingNavigation(null);
-          }}
-          onSuccess={handleSignInSuccess}
-          onError={handleSignInError}
-        />
-      </Suspense>
+      {isClient && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        </div>}>
+          <SignInModal
+            isOpen={showSignInModal}
+            onClose={() => {
+              setShowSignInModal(false);
+              setPendingNavigation(null);
+            }}
+            onSuccess={handleSignInSuccess}
+            onError={handleSignInError}
+          />
+        </Suspense>
+      )}
 
       {/* User Profile Setup Modal */}
-      {showProfileSetup && user && (
+      {showProfileSetup && user && isClient && (
         <Suspense fallback={<div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
         </div>}>
