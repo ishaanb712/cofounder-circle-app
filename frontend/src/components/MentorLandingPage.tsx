@@ -162,9 +162,13 @@ export default function MentorLandingPage() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center pt-16 md:pt-20">
-        {/* Optimized Background - Replaced large image with gradient */}
+        {/* Optimized Background Image */}
         <div 
-          className="absolute inset-0 bg-gradient-to-br from-green-900 via-teal-800 to-blue-900"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=60')",
+            filter: 'brightness(0.3)'
+          }}
         />
         
         {/* Content Overlay */}

@@ -56,12 +56,8 @@ export function usePerformance() {
       (window as any).gtag('event', eventName, data);
     }
     
-    // Send to your analytics endpoint
-    fetch('/api/analytics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event: eventName, data, timestamp: Date.now() })
-    }).catch(console.error);
+    // Removed unnecessary API call that was causing performance issues
+    // The analytics endpoint doesn't exist and was causing delays
   }, []);
 
   useEffect(() => {

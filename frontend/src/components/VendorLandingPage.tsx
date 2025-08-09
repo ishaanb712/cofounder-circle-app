@@ -162,9 +162,13 @@ export default function VendorLandingPage() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center pt-16 md:pt-20">
-        {/* Optimized Background - Replaced large image with gradient */}
+        {/* Optimized Background Image */}
         <div 
-          className="absolute inset-0 bg-gradient-to-br from-purple-900 via-pink-800 to-red-900"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=60')",
+            filter: 'brightness(0.3)'
+          }}
         />
         
         {/* Content Overlay */}

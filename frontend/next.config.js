@@ -1,14 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   
-  // HTTPS Configuration
-  server: {
-    https: process.env.NODE_ENV === 'development' ? {
-      // For development, we'll use a self-signed certificate
-      // In production, this will be handled by nginx/reverse proxy
-    } : undefined,
-  },
-  
   // Image optimization
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -33,17 +25,6 @@ const nextConfig = {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
-  
-  // Bundle analyzer (optional - for debugging)
-  // webpack: (config, { isServer }) => {
-  //   if (!isServer) {
-  //     config.resolve.fallback = {
-  //       ...config.resolve.fallback,
-  //       fs: false,
-  //     };
-  //   }
-  //   return config;
-  // },
   
   // Headers for caching and security
   async headers() {
