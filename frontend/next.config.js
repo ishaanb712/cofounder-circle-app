@@ -22,6 +22,18 @@ const nextConfig = {
   // Compression
   compress: true,
   
+  // Enable SWC minification
+  swcMinify: true,
+  
+  // Optimize fonts
+  optimizeFonts: true,
+  
+  // Experimental features for better performance
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
+  
   // Bundle analyzer (optional - for debugging)
   // webpack: (config, { isServer }) => {
   //   if (!isServer) {
@@ -76,12 +88,6 @@ const nextConfig = {
   
   // Output configuration
   output: 'standalone',
-  
-  // Enable SWC minification
-  swcMinify: true,
-  
-  // Optimize fonts
-  optimizeFonts: true,
 };
 
 module.exports = nextConfig;
