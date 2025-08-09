@@ -14,11 +14,15 @@ const getApiBaseUrl = () => {
     }
     
     // If we're on a mobile device or different host, use the same hostname
+    // Make sure we don't add an extra colon
+    if (hostname.includes(':')) {
+      return `http://${hostname}`;
+    }
     return `http://${hostname}:${port}`;
   }
   
   // Fallback for server-side rendering
-  return 'http://192.168.1.101:8000';
+  return 'http://localhost:8000';
 };
 
 const API_BASE_URL = getApiBaseUrl();
@@ -26,6 +30,11 @@ const API_BASE_URL = getApiBaseUrl();
 console.log('API Base URL:', API_BASE_URL);
 console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
 console.log('Current hostname:', typeof window !== 'undefined' ? window.location.hostname : 'server-side');
+
+// Validate API URL format
+if (API_BASE_URL && API_BASE_URL.includes('::')) {
+  console.error('Invalid API URL format detected:', API_BASE_URL);
+}
 
 export interface ApiResponse<T = any> {
   success: boolean;

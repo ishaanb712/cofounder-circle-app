@@ -47,6 +47,9 @@ export default function MainLandingPage() {
   const { trackUserInteraction } = usePerformance();
 
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
     // Handle redirect result first
     const handleAuthRedirect = async () => {
       try {
@@ -65,7 +68,9 @@ export default function MainLandingPage() {
     };
 
     // Check current user on mount
-    getCurrentUser().then(setUser);
+    getCurrentUser().then(setUser).catch(error => {
+      console.error('Error getting current user:', error);
+    });
 
     // Handle redirect result
     handleAuthRedirect();

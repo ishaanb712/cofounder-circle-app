@@ -16,8 +16,12 @@ console.log('API Key exists:', !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 console.log('Auth Domain exists:', !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
 console.log('Project ID exists:', !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
 console.log('API Base URL:', process.env.NEXT_PUBLIC_API_URL);
-console.log('Current domain:', window.location.hostname);
-console.log('Current origin:', window.location.origin);
+
+// Only access window object in browser environment
+if (typeof window !== 'undefined') {
+  console.log('Current domain:', window.location.hostname);
+  console.log('Current origin:', window.location.origin);
+}
 
 // Check if required environment variables are set
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 
