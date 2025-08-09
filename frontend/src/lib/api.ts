@@ -16,7 +16,9 @@ const getApiBaseUrl = () => {
     // If we're on a mobile device or different host, use the same hostname
     // Make sure we don't add an extra colon
     if (hostname.includes(':')) {
-      return `http://${hostname}`;
+      // Extract just the hostname part (remove port if present)
+      const cleanHostname = hostname.split(':')[0];
+      return `http://${cleanHostname}:${port}`;
     }
     return `http://${hostname}:${port}`;
   }

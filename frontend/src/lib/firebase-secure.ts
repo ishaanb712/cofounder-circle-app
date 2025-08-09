@@ -3,6 +3,31 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, onAut
 import { signOut as firebaseSignOut } from 'firebase/auth';
 import { apiClient } from './api';
 
+// Get the properly constructed API base URL
+const getApiBaseUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl) return envUrl;
+  
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const port = '8000';
+    
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return `http://localhost:${port}`;
+    }
+    
+    if (hostname.includes(':')) {
+      const cleanHostname = hostname.split(':')[0];
+      return `http://${cleanHostname}:${port}`;
+    }
+    return `http://${hostname}:${port}`;
+  }
+  
+  return 'http://localhost:8000';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,7 +40,7 @@ console.log('Firebase config check:');
 console.log('API Key exists:', !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 console.log('Auth Domain exists:', !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
 console.log('Project ID exists:', !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
-console.log('API Base URL:', process.env.NEXT_PUBLIC_API_URL);
+console.log('API Base URL:', API_BASE_URL);
 
 // Only access window object in browser environment
 if (typeof window !== 'undefined') {
@@ -47,7 +72,7 @@ const handleUserProfileAndSession = async (user: any) => {
     const idToken = await user.getIdToken();
     
     // Check if user profile exists
-    const profileCheckResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/me`, {
+    const profileCheckResponse = await fetch(`${API_BASE_URL}/api/user-profiles/me`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${idToken}`,
@@ -66,7 +91,7 @@ const handleUserProfileAndSession = async (user: any) => {
         user_type: 'student' // Default type, can be updated later
       };
       
-      const profileResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user-profiles/create`, {
+      const profileResponse = await fetch(`${API_BASE_URL}/api/user-profiles/create`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${idToken}`,
@@ -87,7 +112,7 @@ const handleUserProfileAndSession = async (user: any) => {
     }
     
     // Create session
-    const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
+    const sessionResponse = await fetch(`${API_BASE_URL}/api/sessions/create`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${idToken}`,
@@ -256,7 +281,7 @@ export const signOut = async (): Promise<{ error: string | null }> => {
         const sessionToken = localStorage.getItem('session_token');
         
         if (sessionToken) {
-          const logoutResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/logout`, {
+          const logoutResponse = await fetch(`${API_BASE_URL}/api/sessions/logout`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${idToken}`,
@@ -367,7 +392,7 @@ export const createUserProfile = async (userId: string, userData: any) => {
     
     // Also create a session if profile creation was successful
     try {
-      const sessionResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/sessions/create`, {
+      const sessionResponse = await fetch(`${API_BASE_URL}/api/sessions/create`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${idToken}`,

@@ -58,7 +58,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://www.googleapis.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://recomfgqqgmebqwoybdk.supabase.co; frame-src 'self' https://accounts.google.com https://cfc-auth-8d97e.firebaseapp.com https://*.firebaseapp.com;",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://www.googleapis.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://recomfgqqgmebqwoybdk.supabase.co http://13.53.254.193:8000 https://13.53.254.193:8000; frame-src 'self' https://accounts.google.com https://cfc-auth-8d97e.firebaseapp.com https://*.firebaseapp.com;",
           },
         ],
       },
