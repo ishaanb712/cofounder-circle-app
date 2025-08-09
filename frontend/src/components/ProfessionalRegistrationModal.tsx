@@ -20,7 +20,7 @@ export default function ProfessionalRegistrationModal({ isOpen, onClose }: Profe
     setSubmitMessage('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/professional/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://13.53.254.193:8000'}/api/professional/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

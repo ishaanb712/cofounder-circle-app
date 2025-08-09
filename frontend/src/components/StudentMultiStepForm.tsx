@@ -142,7 +142,7 @@ export default function StudentMultiStepForm({
       }));
       
       // Make API call to save progress
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000'}/api/students/progress`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://13.53.254.193:8000'}/api/students/progress`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.1.101:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://13.53.254.193:8000';
 
 export interface Session {
   id: string;
