@@ -81,89 +81,91 @@ export default function FounderRegistrationModal({ isOpen, onClose }: FounderReg
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
-          onClick={(e) => {
-            if (e.target === e.currentTarget && !isSubmitting) {
-              onClose();
-            }
-          }}
-        >
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            {/* Header */}
-            <div className="p-4 md:p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 
-                    className="text-lg md:text-xl font-bold text-gray-900"
-                    style={{
-                      fontFamily: 'var(--font-montserrat), sans-serif',
-                      fontWeight: 900
-                    }}
-                  >
-                    CoFounder Circle registration
-                  </h2>
-                  <p
-                    className="text-gray-600 mt-1"
-                    style={{
-                      fontFamily: 'var(--font-roboto), sans-serif',
-                      fontWeight: 500
-                    }}
-                  >
-                    Complete the form in 4 steps
-                  </p>
-                </div>
-                <button
-                  onClick={onClose}
-                  disabled={isSubmitting}
-                  className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <X className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
-              </div>
-            </div>
-
-            {/* Form Content */}
-            <div className="p-4 md:p-6 relative">
-              <FounderMultiStepForm 
-                userId="temp-user-id"
-                onComplete={handleComplete} 
-              />
-              
-              {/* Success Message Overlay */}
-              {submitMessage && submitMessage.includes('✅') && (
-                <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10">
-                  <div className="text-center p-6">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-8 h-8 text-green-600" />
-                    </div>
-                    <h3 
-                      className="text-xl font-semibold text-gray-900 mb-2"
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={(e) => {
+              if (e.target === e.currentTarget && !isSubmitting) {
+                onClose();
+              }
+            }}
+          >
+            <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+              {/* Header */}
+              <div className="p-4 md:p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 
+                      className="text-lg md:text-xl font-bold text-gray-900"
                       style={{
                         fontFamily: 'var(--font-montserrat), sans-serif',
-                        fontWeight: 700
+                        fontWeight: 900
                       }}
                     >
-                      Form Submitted Successfully!
-                    </h3>
-                    <p 
-                      className="text-gray-600"
+                      CoFounder Circle registration
+                    </h2>
+                    <p
+                      className="text-gray-600 mt-1"
                       style={{
                         fontFamily: 'var(--font-roboto), sans-serif',
-                        fontWeight: 400
+                        fontWeight: 500
                       }}
                     >
-                      Thank you for registering with CoFounder Circle.
+                      Complete the form in 4 steps
                     </p>
                   </div>
+                  <button
+                    onClick={onClose}
+                    disabled={isSubmitting}
+                    className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <X className="w-5 h-5 md:w-6 md:h-6" />
+                  </button>
                 </div>
-              )}
+              </div>
+
+              {/* Form Content */}
+              <div className="p-4 md:p-6 relative">
+                <FounderMultiStepForm 
+                  userId="temp-user-id"
+                  onComplete={handleComplete} 
+                />
+                
+                {/* Success Message Overlay */}
+                {submitMessage && submitMessage.includes('✅') && (
+                  <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10">
+                    <div className="text-center p-6">
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle className="w-8 h-8 text-green-600" />
+                      </div>
+                      <h3 
+                        className="text-xl font-semibold text-gray-900 mb-2"
+                        style={{
+                          fontFamily: 'var(--font-montserrat), sans-serif',
+                          fontWeight: 700
+                        }}
+                      >
+                        Form Submitted Successfully!
+                      </h3>
+                      <p 
+                        className="text-gray-600"
+                        style={{
+                          fontFamily: 'var(--font-roboto), sans-serif',
+                          fontWeight: 400
+                        }}
+                      >
+                        Thank you for registering with CoFounder Circle.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 } 
