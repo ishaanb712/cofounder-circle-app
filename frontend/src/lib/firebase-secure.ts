@@ -16,12 +16,15 @@ console.log('API Key exists:', !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 console.log('Auth Domain exists:', !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
 console.log('Project ID exists:', !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
 console.log('API Base URL:', process.env.NEXT_PUBLIC_API_URL);
+console.log('Current domain:', window.location.hostname);
+console.log('Current origin:', window.location.origin);
 
 // Check if required environment variables are set
 if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 
     !process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 
     !process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) {
   console.error('Missing Firebase environment variables');
+  console.error('Please check your .env.local file and ensure all Firebase variables are set');
 }
 
 // Initialize Firebase
@@ -174,6 +177,22 @@ export const signInWithGoogle = async (): Promise<SignInResult> => {
       message: error.message,
       stack: error.stack
     });
+    
+    // Handle specific IP authorization error
+    if (error.code === 'auth/internal-error' || error.message.includes('internal-error')) {
+      console.error('IP Authorization Error Detected!');
+      console.error('Your current IP address may not be authorized in Firebase Console.');
+      console.error('Current IP/Domain:', window.location.hostname);
+      console.error('Please add the following to Firebase Console > Authentication > Settings > Authorized domains:');
+      console.error('-', window.location.hostname);
+      console.error('-', window.location.origin);
+      console.error('-', window.location.hostname + ' (without protocol)');
+      
+      return {
+        user: null,
+        error: `IP Authorization Error: Your current domain/IP (${window.location.hostname}) is not authorized in Firebase Console. Please add it to the authorized domains list.`
+      };
+    }
     
     return {
       user: null,
