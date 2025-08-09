@@ -75,10 +75,10 @@ app.add_middleware(
         "http://G3-MBP-1227.local:3001",
         "https://G3-MBP-1227.local:3000",
         "https://G3-MBP-1227.local:3001",
-        "http://51.20.249.99",
-        "http://51.20.249.99:3000",
-        "https://51.20.249.99",
-        "https://51.20.249.99:3000"
+        "http://13.53.254.193",
+        "http://13.53.254.193:3000",
+        "https://13.53.254.193",
+        "https://13.53.254.193:3000"
     ],
     allow_credentials=True,
     allow_methods=["*"],
