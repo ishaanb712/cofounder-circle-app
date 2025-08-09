@@ -163,95 +163,95 @@ export default function StudentRegistrationModal({ isOpen, onClose }: StudentReg
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={handleClose}
-          />
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={handleClose}
+            />
 
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="relative bg-white rounded-2xl shadow-2xl max-w-xl mx-4 max-h-[90vh] overflow-y-auto"
-            style={{
-              maxWidth: 'calc(100vw - 32px)',
-              margin: '16px',
-              maxHeight: 'calc(100vh - 32px)'
-            }}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <GraduationCap className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative bg-white rounded-2xl shadow-2xl max-w-xl mx-4 max-h-[90vh] overflow-y-auto"
+              style={{
+                maxWidth: 'calc(100vw - 32px)',
+                margin: '16px',
+                maxHeight: 'calc(100vh - 32px)'
+              }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <GraduationCap className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h2 
+                      className="text-lg md:text-2xl font-bold text-gray-900"
+                      style={{
+                        fontFamily: 'var(--font-montserrat), sans-serif',
+                        fontWeight: 900
+                      }}
+                    >
+                      CoFounder Circle Registration
+                    </h2>
+                    <p 
+                      className="text-sm md:text-base text-gray-600"
+                      style={{
+                        fontFamily: 'var(--font-roboto), sans-serif',
+                        fontWeight: 500
+                      }}
+                    >
+                      Complete your profile in 4 simple steps
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h2 
-                    className="text-lg md:text-2xl font-bold text-gray-900"
-                    style={{
-                      fontFamily: 'var(--font-montserrat), sans-serif',
-                      fontWeight: 900
-                    }}
-                  >
-                    CoFounder Circle Registration
-                  </h2>
-                  <p 
-                    className="text-sm md:text-base text-gray-600"
-                    style={{
-                      fontFamily: 'var(--font-roboto), sans-serif',
-                      fontWeight: 500
-                    }}
-                  >
-                    Complete your profile in 4 simple steps
-                  </p>
-                </div>
+                <button
+                  onClick={handleClose}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 md:w-6 md:h-6" />
+                </button>
               </div>
-              <button
-                onClick={handleClose}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5 md:w-6 md:h-6" />
-              </button>
-            </div>
 
-            {/* Content */}
-            <div className="p-4 md:p-6">
-              {/* Submit Message */}
-              {submitMessage && (
-                <div className={`p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-sm md:text-base ${
-                  submitMessage.includes('Error') 
-                    ? 'bg-red-100 text-red-700' 
-                    : 'bg-green-100 text-green-700'
-                }`}>
-                  {submitMessage}
-                </div>
-              )}
+              {/* Content */}
+              <div className="p-4 md:p-6">
+                {/* Submit Message */}
+                {submitMessage && (
+                  <div className={`p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-sm md:text-base ${
+                    submitMessage.includes('Error') 
+                      ? 'bg-red-100 text-red-700' 
+                      : 'bg-green-100 text-green-700'
+                  }`}>
+                    {submitMessage}
+                  </div>
+                )}
 
-
-
-              {/* Multi-Step Form */}
-              <StudentMultiStepForm
-                userId="temp-user-id" // This will be replaced with actual user ID
-                onComplete={handleComplete}
-                onStepChange={handleStepChange}
-              />
-            </div>
-          </motion.div>
-        </div>
-      )}
+                {/* Multi-Step Form */}
+                <StudentMultiStepForm
+                  userId="temp-user-id" // This will be replaced with actual user ID
+                  onComplete={handleComplete}
+                  onStepChange={handleStepChange}
+                />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Success Dialog */}
       <AnimatePresence>
         {showSuccessDialog && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+          <div key="success-dialog" className="fixed inset-0 z-[9999] flex items-center justify-center">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -316,6 +316,6 @@ export default function StudentRegistrationModal({ isOpen, onClose }: StudentReg
           </div>
         )}
       </AnimatePresence>
-    </AnimatePresence>
+    </>
   );
 } 
