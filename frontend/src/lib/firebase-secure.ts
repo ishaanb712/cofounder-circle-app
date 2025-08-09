@@ -6,7 +6,19 @@ import { apiClient } from './api';
 // Get the properly constructed API base URL
 const getApiBaseUrl = () => {
   const envUrl = process.env.NEXT_PUBLIC_API_URL;
-  if (envUrl) return envUrl;
+  
+  // If environment URL is set, validate and return it
+  if (envUrl) {
+    // Check if the URL has a double colon issue
+    if (envUrl.includes('::')) {
+      console.warn('Invalid API URL format detected in environment variable:', envUrl);
+      // Try to fix the double colon issue
+      const fixedUrl = envUrl.replace('::', ':');
+      console.log('Fixed API URL:', fixedUrl);
+      return fixedUrl;
+    }
+    return envUrl;
+  }
   
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;

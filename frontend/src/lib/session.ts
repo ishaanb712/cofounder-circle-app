@@ -1,4 +1,45 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://13.53.254.193:8000';
+// Get the properly constructed API base URL
+const getApiBaseUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  
+  // If environment URL is set, validate and return it
+  if (envUrl) {
+    // Check if the URL has a double colon issue
+    if (envUrl.includes('::')) {
+      console.warn('Invalid API URL format detected in environment variable:', envUrl);
+      // Try to fix the double colon issue
+      const fixedUrl = envUrl.replace('::', ':');
+      console.log('Fixed API URL:', fixedUrl);
+      return fixedUrl;
+    }
+    return envUrl;
+  }
+  
+  // If no environment URL is set, try to detect the correct URL for mobile
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const port = '8000'; // Backend port
+    
+    // If we're on localhost, use localhost
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return `http://localhost:${port}`;
+    }
+    
+    // If we're on a mobile device or different host, use the same hostname
+    // Make sure we don't add an extra colon
+    if (hostname.includes(':')) {
+      // Extract just the hostname part (remove port if present)
+      const cleanHostname = hostname.split(':')[0];
+      return `http://${cleanHostname}:${port}`;
+    }
+    return `http://${hostname}:${port}`;
+  }
+  
+  // Fallback for server-side rendering
+  return 'http://localhost:8000';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export interface Session {
   id: string;

@@ -1,7 +1,19 @@
 // Detect if we're on mobile and adjust API URL accordingly
 const getApiBaseUrl = () => {
   const envUrl = process.env.NEXT_PUBLIC_API_URL;
-  if (envUrl) return envUrl;
+  
+  // If environment URL is set, validate and return it
+  if (envUrl) {
+    // Check if the URL has a double colon issue
+    if (envUrl.includes('::')) {
+      console.warn('Invalid API URL format detected in environment variable:', envUrl);
+      // Try to fix the double colon issue
+      const fixedUrl = envUrl.replace('::', ':');
+      console.log('Fixed API URL:', fixedUrl);
+      return fixedUrl;
+    }
+    return envUrl;
+  }
   
   // If no environment URL is set, try to detect the correct URL for mobile
   if (typeof window !== 'undefined') {
