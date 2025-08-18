@@ -500,7 +500,7 @@ export default function MainLandingPage() {
                 <input
                   type="text"
                   value={searchValue}
-                  className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300"
+                  className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300 pr-32"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 400
