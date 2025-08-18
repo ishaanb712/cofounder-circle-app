@@ -215,8 +215,11 @@ export default function MainLandingPage() {
         window.location.href = '/dashboard';
       }
     } else {
-      // User is not authenticated, show sign-in modal
-      setShowSignInModal(true);
+      // User is not authenticated, scroll to ecosystem section
+      const ecosystemSection = document.getElementById('ecosystem');
+      if (ecosystemSection) {
+        ecosystemSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
