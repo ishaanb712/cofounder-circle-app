@@ -42,7 +42,7 @@ async def ai_search(request: SearchRequest):
         Consider these guidelines:
         - "student": Looking for internships, learning opportunities, career guidance, academic projects
         - "founder": Starting a business, looking for co-founders, investors, startup resources
-        - "mentor": Wanting to share expertise, guide others, teach, provide advice
+        - "mentor": Wanting to share expertise, guide others, teach, provide advice, looking to invest, investors, angel investors, venture capitalists, providing mentorship, offering guidance
         - "vendor": Providing services, looking for clients, business partnerships
         - "working professional": Career advancement, job opportunities, professional networking
         
