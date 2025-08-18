@@ -40,11 +40,11 @@ async def ai_search(request: SearchRequest):
         Return only one of these exact categories: "student", "founder", "mentor", "vendor", "working professional"
         
         Consider these guidelines:
-        - "student": Looking for internships, learning opportunities, career guidance, academic projects
-        - "founder": Starting a business, looking for co-founders, investors, startup resources
-        - "mentor": Wanting to share expertise, guide others, teach, provide advice, looking to invest, investors, angel investors, venture capitalists, providing mentorship, offering guidance
-        - "vendor": Providing services, looking for clients, business partnerships
-        - "working professional": Career advancement, job opportunities, professional networking
+        - "student": Looking for internships, learning opportunities, career guidance, academic projects, students
+        - "founder": Starting a business, looking for co-founders, investors, startup resources, founders, entrepreneurs
+        - "mentor": Wanting to share expertise, guide others, teach, provide advice, looking to invest, investors, angel investors, venture capitalists, providing mentorship, offering guidance, mentors, incubators
+        - "vendor": Providing services, looking for clients, business partnerships, service providers, suppliers, distributors, vendors
+        - "working professional": Career advancement, job opportunities, professional networking, freelancers, job seekers, working professionals
         
         Return only the category name, nothing else."""
 

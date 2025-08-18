@@ -542,6 +542,112 @@ export default function MainLandingPage() {
                 `}</style>
               </div>
             </div>
+
+            {/* Quick Navigation Buttons */}
+            <div className="mb-8 max-w-4xl mx-auto">
+              <div className="flex flex-wrap justify-center gap-3">
+                <button
+                  onClick={() => window.location.href = '/founder'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Founder
+                </button>
+                <button
+                  onClick={() => window.location.href = '/founder'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Entrepreneur
+                </button>
+                <button
+                  onClick={() => window.location.href = '/vendor'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Service Provider
+                </button>
+                <button
+                  onClick={() => window.location.href = '/professional'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Freelancer
+                </button>
+                <button
+                  onClick={() => window.location.href = '/mentor'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Mentor
+                </button>
+                <button
+                  onClick={() => window.location.href = '/mentor'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Incubator
+                </button>
+                <button
+                  onClick={() => window.location.href = '/vendor'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Supplier
+                </button>
+                <button
+                  onClick={() => window.location.href = '/vendor'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Distributor
+                </button>
+                <button
+                  onClick={() => window.location.href = '/professional'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Job Seeker
+                </button>
+                <button
+                  onClick={() => window.location.href = '/student'}
+                  className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm font-medium"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Student
+                </button>
+              </div>
+            </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {user ? (
