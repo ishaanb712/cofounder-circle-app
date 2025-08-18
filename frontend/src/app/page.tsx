@@ -536,6 +536,38 @@ export default function MainLandingPage() {
                 >
                   {isSearching ? 'Searching...' : 'Search'}
                 </button>
+
+                {/* AI Loading Overlay */}
+                {isSearching && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm rounded-full border border-white/30 flex items-center justify-center z-20">
+                    <div className="flex items-center space-x-3">
+                      {/* Animated Brain Icon */}
+                      <div className="relative">
+                        <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full animate-pulse"></div>
+                        <div className="absolute inset-0 w-6 h-6 border-2 border-blue-300 rounded-full animate-ping opacity-75"></div>
+                      </div>
+                      
+                      {/* Loading Text */}
+                      <div className="flex items-center space-x-1">
+                        <span 
+                          className="text-white font-medium"
+                          style={{
+                            fontFamily: 'var(--font-roboto), sans-serif',
+                            fontWeight: 500
+                          }}
+                        >
+                          AI is analyzing
+                        </span>
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-1 h-1 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <style jsx>{`
                   @keyframes blink {
                     0%, 50% { border-color: #60A5FA; }
