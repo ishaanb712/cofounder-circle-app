@@ -37,18 +37,35 @@ export async function uploadFile(
       };
     }
 
-    // Validate file type
-    if (!file.type || !allowedTypes.includes(file.type)) {
+    // Validate file type - check both MIME type and file extension
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    const mimeType = file.type;
+    
+    // Define allowed extensions for each MIME type
+    const allowedExtensions = {
+      'application/pdf': ['pdf'],
+      'image/jpeg': ['jpg', 'jpeg'],
+      'image/png': ['png'],
+      'image/gif': ['gif']
+    };
+    
+    // Check if MIME type is allowed
+    const isMimeTypeAllowed = mimeType && allowedTypes.includes(mimeType);
+    
+    // Check if file extension is allowed
+    const isExtensionAllowed = fileExt && Object.values(allowedExtensions).flat().includes(fileExt);
+    
+    if (!isMimeTypeAllowed && !isExtensionAllowed) {
       return {
         success: false,
-        error: `File type ${file.type || 'unknown'} is not allowed. Allowed types: ${allowedTypes.join(', ')}`
+        error: `File type not allowed. Allowed types: ${allowedTypes.join(', ')} or extensions: ${Object.values(allowedExtensions).flat().join(', ')}`
       };
     }
 
     // Generate unique filename
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.name.split('.').pop() || 'file';
+    const fileExtension = fileExt || 'file';
     const fileName = `${folder}/${timestamp}_${randomString}.${fileExtension}`;
 
     // Upload file to Supabase Storage
