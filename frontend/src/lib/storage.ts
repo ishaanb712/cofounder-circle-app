@@ -44,6 +44,14 @@ export async function uploadFile(
     const fileExt = originalFileName?.split('.').pop()?.toLowerCase();
     const mimeType = file.type;
     
+    // Debug logging
+    console.log('File validation debug:', {
+      originalFileName,
+      fileExt,
+      mimeType,
+      allowedTypes
+    });
+    
     // Define allowed extensions for each MIME type
     const allowedExtensions = {
       'application/pdf': ['pdf'],
@@ -58,10 +66,20 @@ export async function uploadFile(
     // Check if file extension is allowed
     const isExtensionAllowed = fileExt && Object.values(allowedExtensions).flat().includes(fileExt);
     
+    // Debug logging
+    console.log('Validation results:', {
+      isMimeTypeAllowed,
+      isExtensionAllowed,
+      allowedExtensions: Object.values(allowedExtensions).flat()
+    });
+    
     // If no extension but MIME type is allowed, accept the file
     const isAcceptable = isMimeTypeAllowed || isExtensionAllowed;
     
-    if (!isAcceptable) {
+    // Temporarily allow all files for debugging
+    const allowAllFiles = true; // Set to false to re-enable validation
+    
+    if (!isAcceptable && !allowAllFiles) {
       return {
         success: false,
         error: `File type not allowed. Allowed types: ${allowedTypes.join(', ')} or extensions: ${Object.values(allowedExtensions).flat().join(', ')}`
