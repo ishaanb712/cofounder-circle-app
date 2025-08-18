@@ -125,6 +125,20 @@ export default function MainLandingPage() {
     }
   };
 
+  const handleRegisterClick = () => {
+    if (user) {
+      // User is authenticated, show profile setup or redirect to dashboard
+      if (!user.user_type) {
+        setShowProfileSetup(true);
+      } else {
+        window.location.href = '/dashboard';
+      }
+    } else {
+      // User is not authenticated, show sign-in modal
+      setShowSignInModal(true);
+    }
+  };
+
   const userTypes = [
     {
       id: 'students',
@@ -235,115 +249,155 @@ export default function MainLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-200">
+      <nav className="fixed top-0 w-full bg-white z-50 border-b border-gray-200" style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Left side - Navigation links */}
-            <div className="hidden md:flex items-center space-x-4">
-              <a href="#features" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                Features
-              </a>
-              <a href="#ecosystem" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                Ecosystem
-              </a>
-              <a href="#testimonials" className="text-gray-600 hover:text-indigo-600 transition-colors">
-                Success Stories
-              </a>
+          <div className="flex justify-between items-center h-16 md:h-20">
+            {/* Left side - Logo */}
+            <div className="flex items-center md:ml-4 ml-4">
+              <img 
+                src="/final_logo.svg" 
+                alt="CoFounder Circle" 
+                className="h-14 md:h-14"
+                style={{ width: 'auto' }}
+              />
             </div>
             
-            {/* Center - Logo */}
-            <div className="flex items-center justify-center flex-1">
-              <Logo size="md" />
+            {/* Right side - CTA Button */}
+            <div className="hidden md:flex items-center">
+              <button
+                onClick={handleRegisterClick}
+                className="font-medium transition-all duration-300 px-6 py-2 md:px-8 md:py-3"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 500,
+                  fontSize: 'clamp(14px, 2vw, 18px)',
+                  lineHeight: '100%',
+                  letterSpacing: '3%',
+                  textAlign: 'center',
+                  background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                  color: 'white',
+                  borderRadius: '50px',
+                  minWidth: '120px',
+                  maxWidth: '276px'
+                }}
+              >
+                REGISTER NOW
+              </button>
             </div>
             
-            {/* Right side - User actions */}
-            <div className="hidden md:flex items-center space-x-4">
-              {user ? (
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-gray-600">
-                    Welcome, {user.full_name || user.email}
-                  </span>
-                  <Link
-                    href="/dashboard"
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => setShowSignInModal(true)}
-                    className="text-gray-600 hover:text-indigo-600 transition-colors font-medium"
-                  >
-                    Sign In
-                  </button>
-                  <button
-                    onClick={() => setShowSignInModal(true)}
-                    className="text-gray-600 hover:text-indigo-600 transition-colors font-medium"
-                  >
-                    Sign Up
-                  </button>
-                  <button
-                    onClick={() => setShowSignInModal(true)}
-                    className="bg-gradient-to-r from-blue-500 to-teal-500 text-white px-6 py-2 rounded-lg hover:from-blue-600 hover:to-teal-600 transition-all duration-300 font-medium"
-                  >
-                    REGISTER NOW
-                  </button>
-                </div>
-              )}
+            {/* Mobile - Logo and Register Button */}
+            <div className="md:hidden flex items-center justify-between w-full">
+              <div className="flex-1 flex justify-center">
+                <Logo size="sm" />
+              </div>
+              <button
+                onClick={handleRegisterClick}
+                className="font-medium transition-all duration-300 px-4 py-2"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 500,
+                  fontSize: '14px',
+                  lineHeight: '100%',
+                  letterSpacing: '3%',
+                  textAlign: 'center',
+                  background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                  color: 'white',
+                  borderRadius: '50px',
+                  minWidth: '100px'
+                }}
+              >
+                REGISTER NOW
+              </button>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative h-screen flex items-center justify-center pt-16 md:pt-20">
+        {/* Optimized Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=60')",
+            filter: 'brightness(0.3)'
+          }}
+        />
+        
+        {/* Content Overlay */}
+        <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className="text-center"
+            transition={{ duration: 0.3 }}
           >
-            <div className="flex justify-center mb-6">
-              <div className="w-20 h-20 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-3xl flex items-center justify-center">
-                <Users className="w-10 h-10 text-indigo-600" />
-              </div>
-            </div>
-            {/* Critical LCP element - optimized for performance */}
             <h1 
-              className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 font-montserrat"
+              className="font-black leading-none tracking-normal text-center"
               style={{
-                fontFamily: 'var(--font-montserrat), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                fontWeight: 900,
+                fontFamily: 'var(--font-montserrat), sans-serif',
+                fontSize: 'clamp(28px, 8vw, 72px)',
                 lineHeight: '1.1',
-                letterSpacing: '-0.02em'
+                letterSpacing: '0%',
+                textAlign: 'center',
+                maxWidth: '90vw',
+                margin: '0 auto'
               }}
             >
               Connect. Grow.{' '}
-              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <span style={{ background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Succeed.
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p 
+              className="mb-8 max-w-3xl mx-auto mt-6"
+              style={{
+                fontFamily: 'var(--font-roboto), sans-serif',
+                fontWeight: 500,
+                fontSize: 'clamp(18px, 4vw, 24px)',
+                lineHeight: '1.2',
+                letterSpacing: '0%',
+                textAlign: 'center'
+              }}
+            >
               The ultimate platform connecting students, founders, mentors, vendors, and professionals in one unified ecosystem.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {user ? (
                 <Link
                   href="/dashboard"
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2"
+                  className="font-medium transition-all duration-300 px-8 py-4 rounded-full text-lg flex items-center justify-center gap-2"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500,
+                    fontSize: 'clamp(16px, 3vw, 20px)',
+                    lineHeight: '100%',
+                    letterSpacing: '3%',
+                    textAlign: 'center',
+                    background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                    color: 'white',
+                    minWidth: '200px'
+                  }}
                 >
                   Go to Dashboard
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               ) : (
                 <button
-                  onClick={() => setShowSignInModal(true)}
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2"
+                  onClick={handleRegisterClick}
+                  className="font-medium transition-all duration-300 px-8 py-4 rounded-full text-lg flex items-center justify-center gap-2"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500,
+                    fontSize: 'clamp(16px, 3vw, 20px)',
+                    lineHeight: '100%',
+                    letterSpacing: '3%',
+                    textAlign: 'center',
+                    background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                    color: 'white',
+                    minWidth: '200px'
+                  }}
                 >
                   Get Started
                   <ArrowRight className="w-5 h-5" />
@@ -351,7 +405,15 @@ export default function MainLandingPage() {
               )}
               <a
                 href="#ecosystem"
-                className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-lg text-lg font-semibold hover:border-indigo-600 hover:text-indigo-600 transition-colors"
+                className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors flex items-center justify-center"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 500,
+                  fontSize: 'clamp(16px, 3vw, 20px)',
+                  lineHeight: '100%',
+                  letterSpacing: '3%',
+                  minWidth: '200px'
+                }}
               >
                 Explore Ecosystem
               </a>
@@ -390,10 +452,22 @@ export default function MainLandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 
+              className="text-4xl font-bold text-gray-900 mb-4"
+              style={{
+                fontFamily: 'var(--font-montserrat), sans-serif',
+                fontWeight: 900
+              }}
+            >
               Choose Your Path
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p 
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              style={{
+                fontFamily: 'var(--font-roboto), sans-serif',
+                fontWeight: 500
+              }}
+            >
               Join the ecosystem that matches your goals and aspirations
             </p>
           </motion.div>
@@ -420,22 +494,52 @@ export default function MainLandingPage() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{userType.title}</h3>
-                  <p className="text-gray-600 mb-6">{userType.description}</p>
+                  <h3 
+                    className="text-2xl font-bold text-gray-900 mb-4"
+                    style={{
+                      fontFamily: 'var(--font-montserrat), sans-serif',
+                      fontWeight: 700
+                    }}
+                  >
+                    {userType.title}
+                  </h3>
+                  <p 
+                    className="text-gray-600 mb-6"
+                    style={{
+                      fontFamily: 'var(--font-roboto), sans-serif',
+                      fontWeight: 400
+                    }}
+                  >
+                    {userType.description}
+                  </p>
 
                   {/* Features */}
                   <div className="space-y-2 mb-6">
                     {userType.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center gap-2">
                         <CheckCircle className={`w-4 h-4 text-${userType.color}-500`} />
-                        <span className="text-sm text-gray-600">{feature}</span>
+                        <span 
+                          className="text-sm text-gray-600"
+                          style={{
+                            fontFamily: 'var(--font-roboto), sans-serif',
+                            fontWeight: 400
+                          }}
+                        >
+                          {feature}
+                        </span>
                       </div>
                     ))}
                   </div>
 
                   {/* CTA */}
                   <div className="flex items-center justify-between">
-                    <span className={`text-${userType.color}-600 font-semibold group-hover:text-${userType.color}-700 transition-colors`}>
+                    <span 
+                      className={`text-${userType.color}-600 font-semibold group-hover:text-${userType.color}-700 transition-colors`}
+                      style={{
+                        fontFamily: 'var(--font-roboto), sans-serif',
+                        fontWeight: 500
+                      }}
+                    >
                       Get Started
                     </span>
                     <ArrowRight className={`w-5 h-5 text-${userType.color}-600 group-hover:translate-x-1 transition-transform`} />
@@ -466,10 +570,22 @@ export default function MainLandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 
+              className="text-4xl font-bold text-gray-900 mb-4"
+              style={{
+                fontFamily: 'var(--font-montserrat), sans-serif',
+                fontWeight: 900
+              }}
+            >
               Why Choose The CoFounder Circle?
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p 
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              style={{
+                fontFamily: 'var(--font-roboto), sans-serif',
+                fontWeight: 500
+              }}
+            >
               The only platform that brings together all stakeholders in the startup ecosystem
             </p>
           </motion.div>
@@ -487,8 +603,24 @@ export default function MainLandingPage() {
                 <div className="w-16 h-16 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
                   <feature.icon className="w-8 h-8 text-indigo-600" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <h3 
+                  className="text-2xl font-bold text-gray-900 mb-4"
+                  style={{
+                    fontFamily: 'var(--font-montserrat), sans-serif',
+                    fontWeight: 700
+                  }}
+                >
+                  {feature.title}
+                </h3>
+                <p 
+                  className="text-gray-600"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 400
+                  }}
+                >
+                  {feature.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -505,10 +637,22 @@ export default function MainLandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 
+              className="text-4xl font-bold text-gray-900 mb-4"
+              style={{
+                fontFamily: 'var(--font-montserrat), sans-serif',
+                fontWeight: 900
+              }}
+            >
               Success Stories
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p 
+              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              style={{
+                fontFamily: 'var(--font-roboto), sans-serif',
+                fontWeight: 500
+              }}
+            >
               Hear from our community members who have achieved their goals
             </p>
           </motion.div>
@@ -526,11 +670,35 @@ export default function MainLandingPage() {
                 <div className="flex items-center mb-4">
                   <CheckCircle className={`w-6 h-6 text-${testimonial.color}-500 mr-2`} />
                   <div>
-                    <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
+                    <h4 
+                      className="font-semibold text-gray-900"
+                      style={{
+                        fontFamily: 'var(--font-montserrat), sans-serif',
+                        fontWeight: 600
+                      }}
+                    >
+                      {testimonial.name}
+                    </h4>
+                    <p 
+                      className="text-sm text-gray-600"
+                      style={{
+                        fontFamily: 'var(--font-roboto), sans-serif',
+                        fontWeight: 400
+                      }}
+                    >
+                      {testimonial.role}
+                    </p>
                   </div>
                 </div>
-                <p className="text-gray-700 italic">"{testimonial.text}"</p>
+                <p 
+                  className="text-gray-700 italic"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 400
+                  }}
+                >
+                  "{testimonial.text}"
+                </p>
               </motion.div>
             ))}
           </div>
@@ -546,31 +714,55 @@ export default function MainLandingPage() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
+            <h2 
+              className="text-4xl font-bold text-white mb-6"
+              style={{
+                fontFamily: 'var(--font-montserrat), sans-serif',
+                fontWeight: 900
+              }}
+            >
               Ready to Join the Ecosystem?
             </h2>
-            <p className="text-xl text-indigo-100 mb-8">
+            <p 
+              className="text-xl text-indigo-100 mb-8"
+              style={{
+                fontFamily: 'var(--font-roboto), sans-serif',
+                fontWeight: 500
+              }}
+            >
               Choose your path and start connecting with opportunities that match your goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {user ? (
                 <Link
                   href="/dashboard"
-                  className="bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
                 >
                   Go to Dashboard
                 </Link>
               ) : (
                 <button
-                  onClick={() => setShowSignInModal(true)}
-                  className="bg-white text-indigo-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+                  onClick={handleRegisterClick}
+                  className="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
                 >
                   Get Started
                 </button>
               )}
               <a
                 href="#ecosystem"
-                className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
+                className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 500
+                }}
               >
                 Explore All Paths
               </a>
@@ -584,50 +776,88 @@ export default function MainLandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-2xl font-bold mb-4">The CoFounder Circle</h3>
-              <p className="text-gray-400">
+              <h3 
+                className="text-2xl font-bold mb-4"
+                style={{
+                  fontFamily: 'var(--font-montserrat), sans-serif',
+                  fontWeight: 700
+                }}
+              >
+                The CoFounder Circle
+              </h3>
+              <p 
+                className="text-gray-400"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 400
+                }}
+              >
                 Connecting the entire startup ecosystem - students, founders, mentors, vendors, and professionals.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Platform</h4>
+              <h4 
+                className="font-semibold mb-4"
+                style={{
+                  fontFamily: 'var(--font-montserrat), sans-serif',
+                  fontWeight: 600
+                }}
+              >
+                Platform
+              </h4>
               <ul className="space-y-2 text-gray-400">
-                <li><Link href="/student" className="hover:text-white transition-colors">Students</Link></li>
-                <li><Link href="/founder" className="hover:text-white transition-colors">Founders</Link></li>
-                <li><Link href="/mentor" className="hover:text-white transition-colors">Mentors</Link></li>
-                <li><Link href="/vendor" className="hover:text-white transition-colors">Vendors</Link></li>
-                <li><Link href="/professional" className="hover:text-white transition-colors">Professionals</Link></li>
+                <li><Link href="/student" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Students</Link></li>
+                <li><Link href="/founder" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Founders</Link></li>
+                <li><Link href="/mentor" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Mentors</Link></li>
+                <li><Link href="/vendor" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Vendors</Link></li>
+                <li><Link href="/professional" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Professionals</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
+              <h4 
+                className="font-semibold mb-4"
+                style={{
+                  fontFamily: 'var(--font-montserrat), sans-serif',
+                  fontWeight: 600
+                }}
+              >
+                Resources
+              </h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Events</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Community</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Events</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
+              <h4 
+                className="font-semibold mb-4"
+                style={{
+                  fontFamily: 'var(--font-montserrat), sans-serif',
+                  fontWeight: 600
+                }}
+              >
+                Contact
+              </h4>
               <ul className="space-y-2 text-gray-400">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <span suppressHydrationWarning>hello@cofoundercircle.com</span>
+                  <span suppressHydrationWarning style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>hello@cofoundercircle.com</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
-                  <span suppressHydrationWarning>+1 (555) 123-4567</span>
+                  <span suppressHydrationWarning style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>+1 (555) 123-4567</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
-                  <span suppressHydrationWarning>San Francisco, CA</span>
+                  <span suppressHydrationWarning style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>San Francisco, CA</span>
                 </li>
               </ul>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 The CoFounder Circle. All rights reserved.</p>
+            <p style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>&copy; 2024 The CoFounder Circle. All rights reserved.</p>
           </div>
         </div>
       </footer>
