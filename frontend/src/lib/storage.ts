@@ -38,17 +38,17 @@ export async function uploadFile(
     }
 
     // Validate file type
-    if (!allowedTypes.includes(file.type)) {
+    if (!file.type || !allowedTypes.includes(file.type)) {
       return {
         success: false,
-        error: `File type ${file.type} is not allowed. Allowed types: ${allowedTypes.join(', ')}`
+        error: `File type ${file.type || 'unknown'} is not allowed. Allowed types: ${allowedTypes.join(', ')}`
       };
     }
 
     // Generate unique filename
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.name.split('.').pop();
+    const fileExtension = file.name.split('.').pop() || 'file';
     const fileName = `${folder}/${timestamp}_${randomString}.${fileExtension}`;
 
     // Upload file to Supabase Storage

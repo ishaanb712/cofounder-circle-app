@@ -127,7 +127,7 @@ export default function FileUpload({
 
   const getFileIcon = (file: File) => {
     if (file.type === 'application/pdf') return <FileText className="w-5 h-5" />;
-    if (file.type.startsWith('image/')) return <FileText className="w-5 h-5" />;
+    if (file.type && file.type.startsWith('image/')) return <FileText className="w-5 h-5" />;
     return <FileText className="w-5 h-5" />;
   };
 
