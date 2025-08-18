@@ -58,17 +58,35 @@ export async function uploadFile(
     // Check if file extension is allowed
     const isExtensionAllowed = fileExt && Object.values(allowedExtensions).flat().includes(fileExt);
     
-    if (!isMimeTypeAllowed && !isExtensionAllowed) {
+    // If no extension but MIME type is allowed, accept the file
+    const isAcceptable = isMimeTypeAllowed || isExtensionAllowed;
+    
+    if (!isAcceptable) {
       return {
         success: false,
         error: `File type not allowed. Allowed types: ${allowedTypes.join(', ')} or extensions: ${Object.values(allowedExtensions).flat().join(', ')}`
       };
     }
 
-    // Generate unique filename
+    // Generate unique filename with appropriate extension
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
-    const fileExtension = fileExt || 'file';
+    
+    // Determine file extension
+    let fileExtension = fileExt;
+    if (!fileExtension && mimeType) {
+      // Map MIME types to extensions
+      const mimeToExt: { [key: string]: string } = {
+        'application/pdf': 'pdf',
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/gif': 'gif'
+      };
+      fileExtension = mimeToExt[mimeType] || 'file';
+    } else if (!fileExtension) {
+      fileExtension = 'file';
+    }
+    
     const fileName = `${folder}/${timestamp}_${randomString}.${fileExtension}`;
 
     // Upload file to Supabase Storage
