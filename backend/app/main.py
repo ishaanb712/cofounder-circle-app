@@ -102,6 +102,10 @@ app.include_router(working_professionals.router, prefix="/api/working-profession
 app.include_router(user_profiles.router, prefix="/api/user-profiles", tags=["User Profiles"])
 app.include_router(sessions.router, prefix="/api/sessions", tags=["Sessions"])
 
+# Import and include location routes
+from app.api.routes import locations
+app.include_router(locations.router, prefix="/api/locations", tags=["Locations"])
+
 @app.get("/")
 async def root():
     return {

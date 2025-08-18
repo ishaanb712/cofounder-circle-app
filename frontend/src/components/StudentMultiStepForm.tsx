@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle, Circle } from 'lucide-react';
+import LocationDropdown from './LocationDropdown';
 // import { updateUserProfile } from '@/lib/firebase';
 
 interface StudentFormData {
@@ -610,16 +611,12 @@ function BasicInfoStep({
           >
             City *
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.city}
-            onChange={(e) => updateFormData('city', e.target.value)}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base"
-            placeholder="Enter your city"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(city: string) => updateFormData('city', city)}
+            placeholder="Select your city"
+            className="w-full"
+            type="all"
           />
         </div>
       </div>
