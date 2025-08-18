@@ -16,6 +16,7 @@ class SearchResponse(BaseModel):
 
 # Initialize OpenAI client
 openai.api_key = os.getenv("OPENAI_API_KEY")
+print(f"OpenAI API Key set: {'Yes' if openai.api_key else 'No'}")  # Debug log
 
 # Role mapping
 ROLE_URLS = {
@@ -32,6 +33,7 @@ async def ai_search(request: SearchRequest):
     Analyze user input using OpenAI to determine their role and redirect accordingly
     """
     try:
+        print(f"Starting AI search for input: '{request.user_input}'")  # Debug log
         # Prepare the prompt for role classification
         system_prompt = """You are a role classifier for a startup ecosystem platform. 
         Analyze the user's input and determine which category they belong to. 
@@ -59,9 +61,12 @@ async def ai_search(request: SearchRequest):
 
         # Extract the classified role
         classified_role = response.choices[0].message.content.strip().lower()
+        print(f"OpenAI Response: '{classified_role}'")  # Debug log
+        print(f"User Input: '{request.user_input}'")    # Debug log
         
         # Validate the response
         if classified_role not in ROLE_URLS:
+            print(f"Invalid role '{classified_role}', falling back to student")  # Debug log
             # Fallback to student if classification is unclear
             classified_role = "student"
         

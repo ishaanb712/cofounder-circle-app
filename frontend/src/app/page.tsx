@@ -152,6 +152,7 @@ export default function MainLandingPage() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('AI Search Response:', data); // Debug log
         // Redirect to the appropriate page
         window.location.href = data.redirect_url;
       } else {
