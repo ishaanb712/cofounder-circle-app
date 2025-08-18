@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-import openai
+from openai import OpenAI
 import os
 from typing import Optional
 
@@ -15,8 +15,8 @@ class SearchResponse(BaseModel):
     confidence: Optional[float] = None
 
 # Initialize OpenAI client
-openai.api_key = os.getenv("OPENAI_API_KEY")
-print(f"OpenAI API Key set: {'Yes' if openai.api_key else 'No'}")  # Debug log
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+print(f"OpenAI API Key set: {'Yes' if os.getenv("OPENAI_API_KEY") else 'No'}")  # Debug log
 
 # Role mapping
 ROLE_URLS = {
@@ -49,7 +49,7 @@ async def ai_search(request: SearchRequest):
         Return only the category name, nothing else."""
 
         # Call OpenAI API
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": system_prompt},
