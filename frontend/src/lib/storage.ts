@@ -29,13 +29,8 @@ export async function uploadFile(
       allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/gif']
     } = options;
 
-    // Validate file has a name
-    if (!file.name) {
-      return {
-        success: false,
-        error: 'File must have a name'
-      };
-    }
+    // Generate default name if file doesn't have one
+    const originalFileName = file.name || `uploaded_file_${Date.now()}`;
 
     // Validate file size
     if (file.size > maxSize) {
@@ -46,7 +41,7 @@ export async function uploadFile(
     }
 
     // Validate file type - check both MIME type and file extension
-    const fileExt = file.name?.split('.').pop()?.toLowerCase();
+    const fileExt = originalFileName?.split('.').pop()?.toLowerCase();
     const mimeType = file.type;
     
     // Define allowed extensions for each MIME type
