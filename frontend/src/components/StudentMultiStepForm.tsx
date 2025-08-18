@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle, Circle } from 'lucide-react';
 import LocationDropdown from './LocationDropdown';
+import YearDropdown from './YearDropdown';
 // import { updateUserProfile } from '@/lib/firebase';
 
 interface StudentFormData {
@@ -558,24 +559,12 @@ function BasicInfoStep({
           >
             Year of passing *
           </label>
-          <select
+          <YearDropdown
             value={formData.year}
-            onChange={(e) => updateFormData('year', parseInt(e.target.value))}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-900 text-sm md:text-base appearance-none bg-white"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400,
-              backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'m6 8 4 4 4-4\'/%3e%3c/svg%3e")',
-              backgroundPosition: 'right 0.5rem center',
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: '1.5em 1.5em',
-              paddingRight: '2.5rem'
-            }}
-          >
-            {Array.from({ length: 7 }, (_, i) => 2024 + i).map(year => (
-              <option key={year} value={year}>{year}</option>
-            ))}
-          </select>
+            onChange={(year) => updateFormData('year', year)}
+            placeholder="Select year"
+            className="w-full"
+          />
         </div>
         
         <div>
