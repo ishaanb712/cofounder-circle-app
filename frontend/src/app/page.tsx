@@ -220,12 +220,7 @@ export default function MainLandingPage() {
     }
   ];
 
-  const stats = [
-    { number: '5000+', label: 'Active Users' },
-    { number: '1000+', label: 'Startups' },
-    { number: '500+', label: 'Mentors' },
-    { number: '200+', label: 'Vendors' }
-  ];
+
 
   const testimonials = [
     {
@@ -388,6 +383,31 @@ export default function MainLandingPage() {
             >
               The ultimate platform connecting students, founders, mentors, vendors, and professionals in one unified ecosystem.
             </p>
+            
+            {/* Search Bar */}
+            <div className="mb-8 max-w-2xl mx-auto w-full">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search for mentors, opportunities, or resources..."
+                  className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 400
+                  }}
+                />
+                <button
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 500
+                  }}
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               {user ? (
                 <Link
@@ -451,42 +471,7 @@ export default function MainLandingPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10"
-              >
-                <div 
-                  className="text-4xl md:text-5xl font-bold text-white mb-2"
-                  style={{
-                    fontFamily: 'var(--font-montserrat), sans-serif',
-                    fontWeight: 900
-                  }}
-                >
-                  {stat.number}
-                </div>
-                <div 
-                  className="text-slate-300"
-                  style={{
-                    fontFamily: 'var(--font-roboto), sans-serif',
-                    fontWeight: 400
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Ecosystem Section */}
       <section id="ecosystem" className="py-20 bg-slate-900">
