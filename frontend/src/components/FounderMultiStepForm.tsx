@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle, Building2, Mail, Phone, MapPin, Linkedin, Globe, FileText, Users, Lightbulb, TrendingUp, Star } from 'lucide-react';
+import LocationDropdown from './LocationDropdown';
 
 interface FounderFormData {
   // Page 1: Founder Details
@@ -221,49 +222,25 @@ export default function FounderMultiStepForm({
   return (
     <div className="w-full max-w-lg mx-auto">
       {/* Progress Bar */}
-      <div className="mb-6 md:mb-8">
-        <div className="flex items-center justify-center space-x-2 md:space-x-4">
-          {Array.from({ length: totalSteps }, (_, step) => (
-            <div key={step} className="flex items-center">
-              <div className={`flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full border-2 ${
-                step < currentStep // Highlight current and previous steps
-                  ? 'bg-indigo-600 border-indigo-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-500'
-              }`}>
-                {step < currentStep - 1 ? ( // Show checkmark for completed steps (before current)
-                  <CheckCircle className="w-3 h-3 md:w-5 md:h-5" />
-                ) : (
-                  <span
-                    className="text-xs md:text-sm font-medium"
-                    style={{
-                      fontFamily: 'var(--font-roboto), sans-serif',
-                      fontWeight: 500
-                    }}
-                  >
-                    {step + 1}
-                  </span>
-                )}
-              </div>
-              {step < totalSteps - 1 && (
-                <div className={`w-6 md:w-12 h-0.5 md:h-1 mx-1 md:mx-2 ${
-                  step < currentStep - 1 ? 'bg-indigo-600' : 'bg-gray-300' // Fill line for completed steps
-                }`} />
-              )}
-            </div>
+      <div className="flex flex-col items-center mb-6 md:mb-8">
+        <div className="flex space-x-2 mb-2">
+          {Array.from({ length: totalSteps }, (_, i) => (
+            <div
+              key={i + 1}
+              className={`w-3 h-3 rounded-full ${
+                i + 1 <= currentStep ? 'bg-indigo-600' : 'bg-gray-300'
+              }`}
+            />
           ))}
         </div>
-        
-        {/* Step Indicator Text */}
-        <div className="text-center mt-2 md:mt-3">
-          <p 
-            className="text-xs md:text-sm text-gray-600"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 500
-            }}
-          >
-            Step {currentStep} of {totalSteps}
-          </p>
+        <div 
+          className="text-center text-sm text-gray-600"
+          style={{
+            fontFamily: 'var(--font-roboto), sans-serif',
+            fontWeight: 500
+          }}
+        >
+          Step {currentStep} of {totalSteps}
         </div>
       </div>
 
@@ -397,7 +374,9 @@ function FounderDetailsStep({
             }}
           />
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+              {errors.name}
+            </p>
           )}
         </div>
 
@@ -426,7 +405,9 @@ function FounderDetailsStep({
             }}
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+              {errors.email}
+            </p>
           )}
         </div>
 
@@ -455,7 +436,9 @@ function FounderDetailsStep({
             }}
           />
           {errors.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+              {errors.phone}
+            </p>
           )}
         </div>
 
@@ -469,16 +452,12 @@ function FounderDetailsStep({
           >
             City *
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.city}
-            onChange={(e) => updateFormData('city', e.target.value)}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg focus:ring-2 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base border-gray-300 focus:ring-indigo-500"
-            placeholder="Your city"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(city: string) => updateFormData('city', city)}
+            placeholder="Select your city"
+            className="w-full"
+            type="all"
           />
         </div>
 
@@ -492,16 +471,13 @@ function FounderDetailsStep({
           >
             State
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.state}
-            onChange={(e) => updateFormData('state', e.target.value)}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg focus:ring-2 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base border-gray-300 focus:ring-indigo-500"
-            placeholder="Your state"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(state: string) => updateFormData('state', state)}
+            placeholder="Select your state"
+            className="w-full"
+            type="state"
+            country="India"
           />
         </div>
 
@@ -530,7 +506,9 @@ function FounderDetailsStep({
             }}
           />
           {errors.linkedin && (
-            <p className="text-red-500 text-sm mt-1">{errors.linkedin}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+              {errors.linkedin}
+            </p>
           )}
         </div>
       </div>
@@ -666,7 +644,9 @@ function StartupStatusStep({
             }}
           />
           {errors.startup_url && (
-            <p className="text-red-500 text-sm mt-1">{errors.startup_url}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+              {errors.startup_url}
+            </p>
           )}
         </div>
 
