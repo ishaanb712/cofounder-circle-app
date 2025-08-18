@@ -436,12 +436,12 @@ export default function MainLandingPage() {
                       I am a{' '}
                     </span>
                     <span 
-                      className="text-blue-400"
+                      className="text-white"
                       style={{ 
                         fontFamily: 'var(--font-roboto), sans-serif', 
                         fontWeight: 400,
                         fontSize: '18px',
-                        borderRight: '2px solid #60A5FA',
+                        borderRight: '2px solid #FFFFFF',
                         animation: isTyping ? 'blink 1s infinite' : 'none'
                       }}
                     >
