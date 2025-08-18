@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import LocationDropdown from './LocationDropdown';
 // import { updateUserProfile } from '@/lib/firebase';
 
 interface MentorFormData {
@@ -313,49 +314,25 @@ export default function MentorMultiStepForm({
   return (
     <div className="w-full">
       {/* Progress Bar */}
-      <div className="mb-6 md:mb-8">
-        <div className="flex items-center justify-center space-x-2 md:space-x-4">
-          {Array.from({ length: totalSteps }, (_, step) => (
-            <div key={step} className="flex items-center">
-              <div className={`flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full border-2 ${
-                step < currentStep // Highlight current and previous steps
-                  ? 'bg-indigo-600 border-indigo-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-500'
-              }`}>
-                {step < currentStep - 1 ? ( // Show checkmark for completed steps (before current)
-                  <CheckCircle className="w-3 h-3 md:w-5 md:h-5" />
-                ) : (
-                  <span
-                    className="text-xs md:text-sm font-medium"
-                    style={{
-                      fontFamily: 'var(--font-roboto), sans-serif',
-                      fontWeight: 500
-                    }}
-                  >
-                    {step + 1}
-                  </span>
-                )}
-              </div>
-              {step < totalSteps - 1 && (
-                <div className={`w-6 md:w-12 h-0.5 md:h-1 mx-1 md:mx-2 ${
-                  step < currentStep - 1 ? 'bg-indigo-600' : 'bg-gray-300' // Fill line for completed steps
-                }`} />
-              )}
-            </div>
+      <div className="flex flex-col items-center mb-6 md:mb-8">
+        <div className="flex space-x-2 mb-2">
+          {Array.from({ length: totalSteps }, (_, i) => (
+            <div
+              key={i + 1}
+              className={`w-3 h-3 rounded-full ${
+                i + 1 <= currentStep ? 'bg-indigo-600' : 'bg-gray-300'
+              }`}
+            />
           ))}
         </div>
-        
-        {/* Step Indicator Text */}
-        <div className="text-center mt-2 md:mt-3">
-          <p 
-            className="text-xs md:text-sm text-gray-600"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 500
-            }}
-          >
-            Step {currentStep} of {totalSteps}
-          </p>
+        <div 
+          className="text-center text-sm text-gray-600"
+          style={{
+            fontFamily: 'var(--font-roboto), sans-serif',
+            fontWeight: 500
+          }}
+        >
+          Step {currentStep} of {totalSteps}
         </div>
       </div>
 
@@ -467,7 +444,7 @@ function BasicDetailsStep({
             }}
           />
           <div className="h-5 mt-1">
-            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+            {errors.name && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.name}</p>}
           </div>
         </div>
 
@@ -495,7 +472,7 @@ function BasicDetailsStep({
             }}
           />
           <div className="h-5 mt-1">
-            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+            {errors.email && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.email}</p>}
           </div>
         </div>
 
@@ -523,7 +500,7 @@ function BasicDetailsStep({
             }}
           />
           <div className="h-5 mt-1">
-            {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+            {errors.phone && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.phone}</p>}
           </div>
         </div>
 
@@ -551,7 +528,7 @@ function BasicDetailsStep({
             }}
           />
           <div className="h-5 mt-1">
-            {errors.organisation && <p className="text-red-500 text-sm">{errors.organisation}</p>}
+            {errors.organisation && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.organisation}</p>}
           </div>
         </div>
 
@@ -565,21 +542,15 @@ function BasicDetailsStep({
           >
             City *
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.city}
-            onChange={(e) => handleFieldChange('city', e.target.value)}
-            className={`w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg focus:ring-2 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base ${
-              errors.city ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-indigo-500'
-            }`}
-            placeholder="Enter your city"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(city: string) => handleFieldChange('city', city)}
+            placeholder="Select your city"
+            className="w-full"
+            type="all"
           />
           <div className="h-5 mt-1">
-            {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
+            {errors.city && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.city}</p>}
           </div>
         </div>
 
@@ -593,18 +564,13 @@ function BasicDetailsStep({
           >
             State
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.state}
-            onChange={(e) => handleFieldChange('state', e.target.value)}
-            className={`w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg focus:ring-2 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base ${
-              errors.state ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-indigo-500'
-            }`}
-            placeholder="Enter your state"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(state: string) => handleFieldChange('state', state)}
+            placeholder="Select your state"
+            className="w-full"
+            type="state"
+            country="India"
           />
         </div>
       </div>
@@ -633,9 +599,7 @@ function BasicDetailsStep({
               fontWeight: 400
             }}
           />
-          <div className="h-5 mt-1">
-            {errors.url && <p className="text-red-500 text-sm">{errors.url}</p>}
-          </div>
+          {errors.url && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.url}</p>}
         </div>
 
         <div>
@@ -662,7 +626,7 @@ function BasicDetailsStep({
             }}
           />
           <div className="h-5 mt-1">
-            {errors.linkedin && <p className="text-red-500 text-sm">{errors.linkedin}</p>}
+            {errors.linkedin && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.linkedin}</p>}
           </div>
         </div>
       </div>
@@ -797,7 +761,7 @@ function IncubatorProfileStep({
           )}
           
           <div className="h-5 mt-1">
-            {errors.incubator_type && <p className="text-red-500 text-sm">{errors.incubator_type}</p>}
+            {errors.incubator_type && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.incubator_type}</p>}
           </div>
         </div>
 
@@ -877,7 +841,7 @@ function IncubatorProfileStep({
           )}
           
           <div className="h-5 mt-1">
-            {errors.focus_areas && <p className="text-red-500 text-sm">{errors.focus_areas}</p>}
+            {errors.focus_areas && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.focus_areas}</p>}
           </div>
         </div>
 
@@ -891,12 +855,14 @@ function IncubatorProfileStep({
           >
             Preferred Startup Stage *
           </label>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {STARTUP_STAGE_OPTIONS.map((option) => (
               <button
                 key={option}
                 type="button"
-                onClick={() => toggleArrayItem('preferred_startup_stage', option)}
+                onClick={() => {
+                  toggleArrayItem('preferred_startup_stage', option);
+                }}
                 className={`p-3 md:p-4 text-left rounded-lg border-2 transition-colors text-sm md:text-base ${
                   formData.preferred_startup_stage?.includes(option)
                     ? 'border-indigo-500 bg-indigo-50 text-indigo-700'
@@ -911,11 +877,50 @@ function IncubatorProfileStep({
               </button>
             ))}
           </div>
+          
+          {/* Other preferred startup stage input */}
+          {(formData.preferred_startup_stage?.includes('Sector-specific') || otherFocusArea) && (
+            <div className="mt-4">
+              <label 
+                className="block text-sm font-medium text-gray-700 mb-2"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 500
+                }}
+              >
+                Please specify your preferred startup stage:
+              </label>
+              <input
+                type="text"
+                value={otherFocusArea}
+                onChange={(e) => {
+                  setOtherFocusArea(e.target.value);
+                  // Add the custom startup stage to the array
+                  const currentStages = formData.preferred_startup_stage?.filter(stage => stage !== 'Sector-specific') || [];
+                  if (e.target.value.trim()) {
+                    handleFieldChange('preferred_startup_stage', [...currentStages, e.target.value.trim()]);
+                  } else {
+                    // If empty, keep 'Sector-specific' in the array
+                    handleFieldChange('preferred_startup_stage', [...currentStages, 'Sector-specific']);
+                  }
+                }}
+                className={`w-full px-3 md:px-4 py-2 md:py-3 border rounded-lg focus:ring-2 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base ${
+                  errors.preferred_startup_stage ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-indigo-500'
+                }`}
+                placeholder="Enter your preferred startup stage"
+                style={{
+                  fontFamily: 'var(--font-roboto), sans-serif',
+                  fontWeight: 400
+                }}
+              />
+            </div>
+          )}
+          
           <div className="h-5 mt-1">
-            {errors.preferred_startup_stage && <p className="text-red-500 text-sm">{errors.preferred_startup_stage}</p>}
+            {errors.preferred_startup_stage && <p className="text-red-500 text-sm" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.preferred_startup_stage}</p>}
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}
