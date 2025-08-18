@@ -82,12 +82,51 @@ export default function MainLandingPage() {
   const [pendingNavigation, setPendingNavigation] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   
+  // Text streaming state
+  const [streamingText, setStreamingText] = useState('');
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+  
+  const streamingUserTypes = ['student', 'founder', 'mentor', 'vendor', 'working professional'];
+  
   // Performance monitoring
   const { trackUserInteraction } = usePerformance();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Text streaming effect
+  useEffect(() => {
+    const currentWord = streamingUserTypes[currentWordIndex];
+    
+    if (isTyping) {
+      if (streamingText.length < currentWord.length) {
+        const timer = setTimeout(() => {
+          setStreamingText(currentWord.slice(0, streamingText.length + 1));
+        }, 100);
+        return () => clearTimeout(timer);
+      } else {
+        const timer = setTimeout(() => {
+          setIsTyping(false);
+        }, 2000); // Pause for 2 seconds when word is complete
+        return () => clearTimeout(timer);
+      }
+    } else {
+      if (streamingText.length > 0) {
+        const timer = setTimeout(() => {
+          setStreamingText(streamingText.slice(0, -1));
+        }, 50);
+        return () => clearTimeout(timer);
+      } else {
+        const timer = setTimeout(() => {
+          setCurrentWordIndex((prev) => (prev + 1) % streamingUserTypes.length);
+          setIsTyping(true);
+        }, 500); // Pause before starting next word
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [streamingText, isTyping, currentWordIndex, streamingUserTypes]);
 
   useEffect(() => {
     // Only run on client side
@@ -387,10 +426,25 @@ export default function MainLandingPage() {
             {/* Search Bar */}
             <div className="mb-8 max-w-2xl mx-auto w-full">
               <div className="relative">
+                <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none z-10">
+                  <span style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+                    I am a{' '}
+                  </span>
+                  <span 
+                    className="text-blue-400"
+                    style={{ 
+                      fontFamily: 'var(--font-roboto), sans-serif', 
+                      fontWeight: 500,
+                      borderRight: '2px solid #60A5FA',
+                      animation: isTyping ? 'blink 1s infinite' : 'none'
+                    }}
+                  >
+                    {streamingText}
+                  </span>
+                </div>
                 <input
                   type="text"
-                  placeholder="Search for mentors, opportunities, or resources..."
-                  className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/60 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300"
+                  className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 400
@@ -405,6 +459,12 @@ export default function MainLandingPage() {
                 >
                   Search
                 </button>
+                <style jsx>{`
+                  @keyframes blink {
+                    0%, 50% { border-color: #60A5FA; }
+                    51%, 100% { border-color: transparent; }
+                  }
+                `}</style>
               </div>
             </div>
             
