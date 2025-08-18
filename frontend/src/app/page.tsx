@@ -271,7 +271,7 @@ export default function MainLandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/10 backdrop-blur-md z-50 border-b border-white/20">
+      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-200/50 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             {/* Left side - Logo */}
@@ -296,13 +296,12 @@ export default function MainLandingPage() {
                   lineHeight: '100%',
                   letterSpacing: '3%',
                   textAlign: 'center',
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+                  background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
                   color: 'white',
                   borderRadius: '50px',
                   minWidth: '120px',
                   maxWidth: '276px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(10px)'
+                  boxShadow: '0 4px 14px 0 rgba(59, 130, 246, 0.3)'
                 }}
               >
                 REGISTER NOW
@@ -324,12 +323,11 @@ export default function MainLandingPage() {
                   lineHeight: '100%',
                   letterSpacing: '3%',
                   textAlign: 'center',
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
+                  background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
                   color: 'white',
                   borderRadius: '50px',
                   minWidth: '100px',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(10px)'
+                  boxShadow: '0 4px 14px 0 rgba(59, 130, 246, 0.3)'
                 }}
               >
                 REGISTER NOW
