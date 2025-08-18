@@ -431,6 +431,73 @@ export default function MainLandingPage() {
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         
+        {/* Startup Ecosystem Doodles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Connection Lines */}
+          <svg className="absolute top-20 left-10 w-32 h-32 opacity-10 animate-pulse" viewBox="0 0 100 100">
+            <path d="M10,50 Q25,25 50,25 Q75,25 90,50 Q75,75 50,75 Q25,75 10,50" stroke="white" strokeWidth="1" fill="none" strokeDasharray="5,5"/>
+            <circle cx="25" cy="25" r="3" fill="white" opacity="0.6"/>
+            <circle cx="75" cy="25" r="3" fill="white" opacity="0.6"/>
+            <circle cx="75" cy="75" r="3" fill="white" opacity="0.6"/>
+            <circle cx="25" cy="75" r="3" fill="white" opacity="0.6"/>
+          </svg>
+          
+          {/* Rocket */}
+          <svg className="absolute top-32 right-20 w-24 h-24 opacity-15 animate-bounce" style={{animationDelay: '1s'}} viewBox="0 0 100 100">
+            <path d="M50,80 L45,60 L55,60 Z" fill="white" opacity="0.3"/>
+            <rect x="45" y="40" width="10" height="20" fill="white" opacity="0.4"/>
+            <path d="M50,40 L45,20 L55,20 Z" fill="white" opacity="0.5"/>
+            <circle cx="50" cy="35" r="2" fill="white" opacity="0.6"/>
+          </svg>
+          
+          {/* Lightbulb */}
+          <svg className="absolute bottom-32 left-20 w-20 h-20 opacity-10 animate-pulse" style={{animationDelay: '2s'}} viewBox="0 0 100 100">
+            <path d="M50,20 Q30,20 30,40 Q30,60 50,70 Q70,60 70,40 Q70,20 50,20" fill="white" opacity="0.2"/>
+            <rect x="45" y="70" width="10" height="15" fill="white" opacity="0.3"/>
+            <path d="M40,85 L60,85" stroke="white" strokeWidth="2" opacity="0.4"/>
+          </svg>
+          
+          {/* Network Nodes */}
+          <svg className="absolute bottom-20 right-32 w-28 h-28 opacity-8 animate-ping" style={{animationDelay: '0.5s'}} viewBox="0 0 100 100">
+            <circle cx="30" cy="30" r="4" fill="white" opacity="0.4"/>
+            <circle cx="70" cy="30" r="4" fill="white" opacity="0.4"/>
+            <circle cx="70" cy="70" r="4" fill="white" opacity="0.4"/>
+            <circle cx="30" cy="70" r="4" fill="white" opacity="0.4"/>
+            <circle cx="50" cy="50" r="4" fill="white" opacity="0.6"/>
+            <line x1="30" y1="30" x2="70" y2="30" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="70" y1="30" x2="70" y2="70" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="70" y1="70" x2="30" y2="70" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="30" y1="70" x2="30" y2="30" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="50" y1="50" x2="30" y2="30" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="50" y1="50" x2="70" y2="30" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="50" y1="50" x2="70" y2="70" stroke="white" strokeWidth="1" opacity="0.3"/>
+            <line x1="50" y1="50" x2="30" y2="70" stroke="white" strokeWidth="1" opacity="0.3"/>
+          </svg>
+          
+          {/* Growth Chart */}
+          <svg className="absolute top-1/2 left-1/4 w-16 h-16 opacity-12 animate-pulse" style={{animationDelay: '1.5s'}} viewBox="0 0 100 100">
+            <path d="M20,80 L35,60 L50,40 L65,30 L80,20" stroke="white" strokeWidth="2" fill="none" opacity="0.4"/>
+            <circle cx="35" cy="60" r="2" fill="white" opacity="0.5"/>
+            <circle cx="50" cy="40" r="2" fill="white" opacity="0.5"/>
+            <circle cx="65" cy="30" r="2" fill="white" opacity="0.5"/>
+            <circle cx="80" cy="20" r="2" fill="white" opacity="0.5"/>
+          </svg>
+          
+          {/* Briefcase */}
+          <svg className="absolute top-1/3 right-1/3 w-18 h-18 opacity-10 animate-bounce" style={{animationDelay: '0.8s'}} viewBox="0 0 100 100">
+            <rect x="25" y="35" width="50" height="35" fill="white" opacity="0.3"/>
+            <rect x="35" y="25" width="30" height="10" fill="white" opacity="0.4"/>
+            <rect x="40" y="45" width="20" height="15" fill="white" opacity="0.2"/>
+          </svg>
+          
+          {/* Graduation Cap */}
+          <svg className="absolute bottom-1/3 left-1/3 w-16 h-16 opacity-8 animate-pulse" style={{animationDelay: '2.5s'}} viewBox="0 0 100 100">
+            <path d="M20,40 Q50,20 80,40 L70,50 L30,50 Z" fill="white" opacity="0.3"/>
+            <rect x="45" y="50" width="10" height="20" fill="white" opacity="0.4"/>
+            <path d="M30,50 L70,50" stroke="white" strokeWidth="2" opacity="0.3"/>
+          </svg>
+        </div>
+        
         {/* Content Overlay */}
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
           <motion.div
