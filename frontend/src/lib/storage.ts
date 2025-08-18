@@ -22,6 +22,16 @@ export async function uploadFile(
   options: FileUploadOptions = {}
 ): Promise<UploadResult> {
   try {
+    // Check if user is authenticated
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
+      console.error('Authentication error:', authError);
+      return {
+        success: false,
+        error: 'You must be signed in to upload files. Please sign in and try again.'
+      };
+    }
     const {
       bucket = 'documents',
       folder = 'uploads',
@@ -117,6 +127,29 @@ export async function uploadFile(
 
     if (error) {
       console.error('Upload error:', error);
+      
+      // Handle specific Supabase errors
+      if (error.message.includes('signature verification failed')) {
+        return {
+          success: false,
+          error: 'Authentication failed. Please sign in again or check your Supabase configuration.'
+        };
+      }
+      
+      if (error.message.includes('not found')) {
+        return {
+          success: false,
+          error: 'Storage bucket not found. Please check your Supabase storage configuration.'
+        };
+      }
+      
+      if (error.message.includes('permission denied')) {
+        return {
+          success: false,
+          error: 'Permission denied. You may need to sign in or check storage policies.'
+        };
+      }
+      
       return {
         success: false,
         error: error.message
