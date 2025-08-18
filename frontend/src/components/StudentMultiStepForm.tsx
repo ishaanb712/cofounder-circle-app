@@ -291,8 +291,8 @@ export default function StudentMultiStepForm({
   return (
     <div className="w-full max-w-lg mx-auto">
       {/* Step Indicator */}
-      <div className="flex justify-center mb-6 md:mb-8">
-        <div className="flex space-x-2">
+      <div className="flex flex-col items-center mb-6 md:mb-8">
+        <div className="flex space-x-2 mb-2">
           {Array.from({ length: totalSteps }, (_, i) => (
             <div
               key={i + 1}
