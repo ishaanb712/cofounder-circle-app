@@ -25,11 +25,19 @@ export async function uploadFile(
     // Check if user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
+    // Debug authentication state
+    console.log('Authentication debug:', {
+      user: user ? { id: user.id, email: user.email } : null,
+      authError,
+      hasUser: !!user,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...'
+    });
+    
     if (authError || !user) {
       console.error('Authentication error:', authError);
       return {
         success: false,
-        error: 'You must be signed in to upload files. Please sign in and try again.'
+        error: `Authentication failed. User: ${!!user}, Error: ${authError?.message || 'No user found'}`
       };
     }
     const {
