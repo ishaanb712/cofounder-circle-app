@@ -36,6 +36,44 @@ const GoogleSignInButton = lazy(() => import('@/components/GoogleSignInButton'))
 const UserProfileSetup = lazy(() => import('@/components/UserProfileSetup'));
 const SignInModal = lazy(() => import('@/components/SignInModal'));
 
+// Rain effect component
+const RainEffect = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {[...Array(50)].map((_, i) => (
+      <div
+        key={i}
+        className="absolute w-0.5 bg-white/20 animate-pulse"
+        style={{
+          left: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 2}s`,
+          animationDuration: `${1 + Math.random() * 2}s`,
+          height: `${20 + Math.random() * 60}px`,
+          top: '-100px',
+          animation: `rain ${2 + Math.random() * 3}s linear infinite`
+        }}
+      />
+    ))}
+    <style jsx>{`
+      @keyframes rain {
+        0% {
+          transform: translateY(-100px);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh);
+          opacity: 0;
+        }
+      }
+    `}</style>
+  </div>
+);
+
 export default function MainLandingPage() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -145,9 +183,6 @@ export default function MainLandingPage() {
       title: 'Students',
       description: 'Connect with mentors, find internships, and kickstart your career journey',
       icon: GraduationCap,
-      color: 'blue',
-      gradient: 'from-blue-500 to-cyan-500',
-      bgGradient: 'from-blue-50 to-cyan-50',
       href: '/student',
       features: ['Mentorship Programs', 'Internship Opportunities', 'Career Guidance', 'Skill Development']
     },
@@ -156,9 +191,6 @@ export default function MainLandingPage() {
       title: 'Founders',
       description: 'Connect with investors, mentors, and build your startup ecosystem',
       icon: Rocket,
-      color: 'green',
-      gradient: 'from-green-500 to-emerald-500',
-      bgGradient: 'from-green-50 to-emerald-50',
       href: '/founder',
       features: ['Investor Network', 'Mentorship', 'Startup Resources', 'Funding Opportunities']
     },
@@ -167,9 +199,6 @@ export default function MainLandingPage() {
       title: 'Mentors',
       description: 'Share your expertise and guide the next generation of professionals',
       icon: User,
-      color: 'purple',
-      gradient: 'from-purple-500 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50',
       href: '/mentor',
       features: ['Mentorship Programs', 'Expert Network', 'Knowledge Sharing', 'Impact Opportunities']
     },
@@ -178,9 +207,6 @@ export default function MainLandingPage() {
       title: 'Vendors',
       description: 'Connect with startups and grow your business with quality clients',
       icon: Building2,
-      color: 'orange',
-      gradient: 'from-orange-500 to-red-500',
-      bgGradient: 'from-orange-50 to-red-50',
       href: '/vendor',
       features: ['Startup Network', 'Business Growth', 'Quality Leads', 'Service Opportunities']
     },
@@ -189,9 +215,6 @@ export default function MainLandingPage() {
       title: 'Working Professionals',
       description: 'Advance your career and connect with opportunities worldwide',
       icon: Briefcase,
-      color: 'teal',
-      gradient: 'from-teal-500 to-cyan-500',
-      bgGradient: 'from-teal-50 to-cyan-50',
       href: '/professional',
       features: ['Career Growth', 'Professional Network', 'Skill Development', 'Global Opportunities']
     }
@@ -208,20 +231,17 @@ export default function MainLandingPage() {
     {
       name: 'Sarah Johnson',
       role: 'Student',
-      text: 'Found my dream internship through this platform. The mentorship program was incredible!',
-      color: 'blue'
+      text: 'Found my dream internship through this platform. The mentorship program was incredible!'
     },
     {
       name: 'Michael Chen',
       role: 'Founder',
-      text: 'Connected with amazing investors and mentors. This platform accelerated our growth.',
-      color: 'green'
+      text: 'Connected with amazing investors and mentors. This platform accelerated our growth.'
     },
     {
       name: 'Lisa Rodriguez',
       role: 'Mentor',
-      text: 'Helping students and founders grow has been incredibly rewarding. Great community!',
-      color: 'purple'
+      text: 'Helping students and founders grow has been incredibly rewarding. Great community!'
     }
   ];
 
@@ -249,9 +269,9 @@ export default function MainLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white z-50 border-b border-gray-200" style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+      <nav className="fixed top-0 w-full bg-white/10 backdrop-blur-md z-50 border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 md:h-20">
             {/* Left side - Logo */}
@@ -268,7 +288,7 @@ export default function MainLandingPage() {
             <div className="hidden md:flex items-center">
               <button
                 onClick={handleRegisterClick}
-                className="font-medium transition-all duration-300 px-6 py-2 md:px-8 md:py-3"
+                className="font-medium transition-all duration-300 px-6 py-2 md:px-8 md:py-3 hover:scale-105"
                 style={{
                   fontFamily: 'var(--font-roboto), sans-serif',
                   fontWeight: 500,
@@ -276,11 +296,13 @@ export default function MainLandingPage() {
                   lineHeight: '100%',
                   letterSpacing: '3%',
                   textAlign: 'center',
-                  background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
                   color: 'white',
                   borderRadius: '50px',
                   minWidth: '120px',
-                  maxWidth: '276px'
+                  maxWidth: '276px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(10px)'
                 }}
               >
                 REGISTER NOW
@@ -294,7 +316,7 @@ export default function MainLandingPage() {
               </div>
               <button
                 onClick={handleRegisterClick}
-                className="font-medium transition-all duration-300 px-4 py-2"
+                className="font-medium transition-all duration-300 px-4 py-2 hover:scale-105"
                 style={{
                   fontFamily: 'var(--font-roboto), sans-serif',
                   fontWeight: 500,
@@ -302,10 +324,12 @@ export default function MainLandingPage() {
                   lineHeight: '100%',
                   letterSpacing: '3%',
                   textAlign: 'center',
-                  background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
                   color: 'white',
                   borderRadius: '50px',
-                  minWidth: '100px'
+                  minWidth: '100px',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(10px)'
                 }}
               >
                 REGISTER NOW
@@ -317,14 +341,11 @@ export default function MainLandingPage() {
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center pt-16 md:pt-20">
-        {/* Optimized Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=60')",
-            filter: 'brightness(0.3)'
-          }}
-        />
+        {/* Rain Effect */}
+        <RainEffect />
+        
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         
         {/* Content Overlay */}
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
@@ -346,7 +367,12 @@ export default function MainLandingPage() {
               }}
             >
               Connect. Grow.{' '}
-              <span style={{ background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ 
+                background: 'linear-gradient(135deg, #60A5FA 0%, #A78BFA 50%, #F472B6 100%)', 
+                WebkitBackgroundClip: 'text', 
+                WebkitTextFillColor: 'transparent', 
+                backgroundClip: 'text' 
+              }}>
                 Succeed.
               </span>
             </h1>
@@ -354,11 +380,12 @@ export default function MainLandingPage() {
               className="mb-8 max-w-3xl mx-auto mt-6"
               style={{
                 fontFamily: 'var(--font-roboto), sans-serif',
-                fontWeight: 500,
+                fontWeight: 400,
                 fontSize: 'clamp(18px, 4vw, 24px)',
                 lineHeight: '1.2',
                 letterSpacing: '0%',
-                textAlign: 'center'
+                textAlign: 'center',
+                color: 'rgba(255,255,255,0.8)'
               }}
             >
               The ultimate platform connecting students, founders, mentors, vendors, and professionals in one unified ecosystem.
@@ -367,7 +394,7 @@ export default function MainLandingPage() {
               {user ? (
                 <Link
                   href="/dashboard"
-                  className="font-medium transition-all duration-300 px-8 py-4 rounded-full text-lg flex items-center justify-center gap-2"
+                  className="font-medium transition-all duration-300 px-8 py-4 rounded-full text-lg flex items-center justify-center gap-2 hover:scale-105"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 500,
@@ -375,9 +402,11 @@ export default function MainLandingPage() {
                     lineHeight: '100%',
                     letterSpacing: '3%',
                     textAlign: 'center',
-                    background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
                     color: 'white',
-                    minWidth: '200px'
+                    minWidth: '200px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(10px)'
                   }}
                 >
                   Go to Dashboard
@@ -386,7 +415,7 @@ export default function MainLandingPage() {
               ) : (
                 <button
                   onClick={handleRegisterClick}
-                  className="font-medium transition-all duration-300 px-8 py-4 rounded-full text-lg flex items-center justify-center gap-2"
+                  className="font-medium transition-all duration-300 px-8 py-4 rounded-full text-lg flex items-center justify-center gap-2 hover:scale-105"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 500,
@@ -394,9 +423,11 @@ export default function MainLandingPage() {
                     lineHeight: '100%',
                     letterSpacing: '3%',
                     textAlign: 'center',
-                    background: 'linear-gradient(91.36deg, #3CE5A7 1.48%, #114DFF 98.84%)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
                     color: 'white',
-                    minWidth: '200px'
+                    minWidth: '200px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(10px)'
                   }}
                 >
                   Get Started
@@ -405,7 +436,7 @@ export default function MainLandingPage() {
               )}
               <a
                 href="#ecosystem"
-                className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors flex items-center justify-center"
+                className="border-2 border-white/30 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 hover:border-white/50 transition-all duration-300 flex items-center justify-center hover:scale-105"
                 style={{
                   fontFamily: 'var(--font-roboto), sans-serif',
                   fontWeight: 500,
@@ -423,7 +454,7 @@ export default function MainLandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
+      <section className="py-20 bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (
@@ -433,9 +464,26 @@ export default function MainLandingPage() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
                 viewport={{ once: true }}
+                className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10"
               >
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">{stat.number}</div>
-                <div className="text-indigo-100">{stat.label}</div>
+                <div 
+                  className="text-4xl md:text-5xl font-bold text-white mb-2"
+                  style={{
+                    fontFamily: 'var(--font-montserrat), sans-serif',
+                    fontWeight: 900
+                  }}
+                >
+                  {stat.number}
+                </div>
+                <div 
+                  className="text-slate-300"
+                  style={{
+                    fontFamily: 'var(--font-roboto), sans-serif',
+                    fontWeight: 400
+                  }}
+                >
+                  {stat.label}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -443,7 +491,7 @@ export default function MainLandingPage() {
       </section>
 
       {/* Ecosystem Section */}
-      <section id="ecosystem" className="py-20 bg-white">
+      <section id="ecosystem" className="py-20 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -453,7 +501,7 @@ export default function MainLandingPage() {
             className="text-center mb-16"
           >
             <h2 
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-4xl font-bold text-white mb-4"
               style={{
                 fontFamily: 'var(--font-montserrat), sans-serif',
                 fontWeight: 900
@@ -462,10 +510,10 @@ export default function MainLandingPage() {
               Choose Your Path
             </h2>
             <p 
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              className="text-xl text-slate-300 max-w-2xl mx-auto"
               style={{
                 fontFamily: 'var(--font-roboto), sans-serif',
-                fontWeight: 500
+                fontWeight: 400
               }}
             >
               Join the ecosystem that matches your goals and aspirations
@@ -482,20 +530,20 @@ export default function MainLandingPage() {
                 viewport={{ once: true }}
                 onHoverStart={() => setHoveredCard(userType.id)}
                 onHoverEnd={() => setHoveredCard(null)}
-                className="relative"
+                className="relative group"
               >
                 <div 
                   onClick={() => handleCardClick(userType.href)}
-                  className={`relative bg-gradient-to-br ${userType.bgGradient} rounded-2xl p-8 h-full border-2 border-transparent hover:border-${userType.color}-200 transition-all duration-300 cursor-pointer group`}
+                  className="relative bg-gradient-to-br from-white/5 to-white/10 rounded-2xl p-8 h-full border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer backdrop-blur-sm hover:scale-105"
                 >
                   {/* Icon */}
-                  <div className={`w-16 h-16 bg-gradient-to-r ${userType.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-white/10">
                     <userType.icon className="w-8 h-8 text-white" />
                   </div>
 
                   {/* Content */}
                   <h3 
-                    className="text-2xl font-bold text-gray-900 mb-4"
+                    className="text-2xl font-bold text-white mb-4"
                     style={{
                       fontFamily: 'var(--font-montserrat), sans-serif',
                       fontWeight: 700
@@ -504,7 +552,7 @@ export default function MainLandingPage() {
                     {userType.title}
                   </h3>
                   <p 
-                    className="text-gray-600 mb-6"
+                    className="text-slate-300 mb-6"
                     style={{
                       fontFamily: 'var(--font-roboto), sans-serif',
                       fontWeight: 400
@@ -517,9 +565,9 @@ export default function MainLandingPage() {
                   <div className="space-y-2 mb-6">
                     {userType.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center gap-2">
-                        <CheckCircle className={`w-4 h-4 text-${userType.color}-500`} />
+                        <CheckCircle className="w-4 h-4 text-blue-400" />
                         <span 
-                          className="text-sm text-gray-600"
+                          className="text-sm text-slate-300"
                           style={{
                             fontFamily: 'var(--font-roboto), sans-serif',
                             fontWeight: 400
@@ -534,7 +582,7 @@ export default function MainLandingPage() {
                   {/* CTA */}
                   <div className="flex items-center justify-between">
                     <span 
-                      className={`text-${userType.color}-600 font-semibold group-hover:text-${userType.color}-700 transition-colors`}
+                      className="text-blue-400 font-semibold group-hover:text-blue-300 transition-colors"
                       style={{
                         fontFamily: 'var(--font-roboto), sans-serif',
                         fontWeight: 500
@@ -542,17 +590,8 @@ export default function MainLandingPage() {
                     >
                       Get Started
                     </span>
-                    <ArrowRight className={`w-5 h-5 text-${userType.color}-600 group-hover:translate-x-1 transition-transform`} />
+                    <ArrowRight className="w-5 h-5 text-blue-400 group-hover:translate-x-1 transition-transform" />
                   </div>
-
-                  {/* Hover Effect */}
-                  {hoveredCard === userType.id && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className={`absolute inset-0 bg-gradient-to-r ${userType.gradient} rounded-2xl opacity-10`}
-                    />
-                  )}
                 </div>
               </motion.div>
             ))}
@@ -561,7 +600,7 @@ export default function MainLandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-50">
+      <section id="features" className="py-20 bg-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -571,7 +610,7 @@ export default function MainLandingPage() {
             className="text-center mb-16"
           >
             <h2 
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-4xl font-bold text-white mb-4"
               style={{
                 fontFamily: 'var(--font-montserrat), sans-serif',
                 fontWeight: 900
@@ -580,10 +619,10 @@ export default function MainLandingPage() {
               Why Choose The CoFounder Circle?
             </h2>
             <p 
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              className="text-xl text-slate-300 max-w-2xl mx-auto"
               style={{
                 fontFamily: 'var(--font-roboto), sans-serif',
-                fontWeight: 500
+                fontWeight: 400
               }}
             >
               The only platform that brings together all stakeholders in the startup ecosystem
@@ -598,13 +637,13 @@ export default function MainLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center"
+                className="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:scale-105 transition-transform duration-300"
               >
-                <div className="w-16 h-16 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <feature.icon className="w-8 h-8 text-indigo-600" />
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10">
+                  <feature.icon className="w-8 h-8 text-white" />
                 </div>
                 <h3 
-                  className="text-2xl font-bold text-gray-900 mb-4"
+                  className="text-2xl font-bold text-white mb-4"
                   style={{
                     fontFamily: 'var(--font-montserrat), sans-serif',
                     fontWeight: 700
@@ -613,7 +652,7 @@ export default function MainLandingPage() {
                   {feature.title}
                 </h3>
                 <p 
-                  className="text-gray-600"
+                  className="text-slate-300"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 400
@@ -628,7 +667,7 @@ export default function MainLandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-white">
+      <section id="testimonials" className="py-20 bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -638,7 +677,7 @@ export default function MainLandingPage() {
             className="text-center mb-16"
           >
             <h2 
-              className="text-4xl font-bold text-gray-900 mb-4"
+              className="text-4xl font-bold text-white mb-4"
               style={{
                 fontFamily: 'var(--font-montserrat), sans-serif',
                 fontWeight: 900
@@ -647,10 +686,10 @@ export default function MainLandingPage() {
               Success Stories
             </h2>
             <p 
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              className="text-xl text-slate-300 max-w-2xl mx-auto"
               style={{
                 fontFamily: 'var(--font-roboto), sans-serif',
-                fontWeight: 500
+                fontWeight: 400
               }}
             >
               Hear from our community members who have achieved their goals
@@ -665,13 +704,13 @@ export default function MainLandingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gray-50 rounded-2xl p-8"
+                className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:scale-105 transition-transform duration-300"
               >
                 <div className="flex items-center mb-4">
-                  <CheckCircle className={`w-6 h-6 text-${testimonial.color}-500 mr-2`} />
+                  <CheckCircle className="w-6 h-6 text-blue-400 mr-2" />
                   <div>
                     <h4 
-                      className="font-semibold text-gray-900"
+                      className="font-semibold text-white"
                       style={{
                         fontFamily: 'var(--font-montserrat), sans-serif',
                         fontWeight: 600
@@ -680,7 +719,7 @@ export default function MainLandingPage() {
                       {testimonial.name}
                     </h4>
                     <p 
-                      className="text-sm text-gray-600"
+                      className="text-sm text-slate-300"
                       style={{
                         fontFamily: 'var(--font-roboto), sans-serif',
                         fontWeight: 400
@@ -691,7 +730,7 @@ export default function MainLandingPage() {
                   </div>
                 </div>
                 <p 
-                  className="text-gray-700 italic"
+                  className="text-slate-300 italic"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 400
@@ -706,7 +745,7 @@ export default function MainLandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600">
+      <section className="py-20 bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -724,10 +763,10 @@ export default function MainLandingPage() {
               Ready to Join the Ecosystem?
             </h2>
             <p 
-              className="text-xl text-indigo-100 mb-8"
+              className="text-xl text-slate-300 mb-8"
               style={{
                 fontFamily: 'var(--font-roboto), sans-serif',
-                fontWeight: 500
+                fontWeight: 400
               }}
             >
               Choose your path and start connecting with opportunities that match your goals.
@@ -736,7 +775,7 @@ export default function MainLandingPage() {
               {user ? (
                 <Link
                   href="/dashboard"
-                  className="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300 border border-white/20 hover:scale-105"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 500
@@ -747,7 +786,7 @@ export default function MainLandingPage() {
               ) : (
                 <button
                   onClick={handleRegisterClick}
-                  className="bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition-colors"
+                  className="bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300 border border-white/20 hover:scale-105"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 500
@@ -758,7 +797,7 @@ export default function MainLandingPage() {
               )}
               <a
                 href="#ecosystem"
-                className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-indigo-600 transition-colors"
+                className="border-2 border-white/30 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 hover:border-white/50 transition-all duration-300 hover:scale-105"
                 style={{
                   fontFamily: 'var(--font-roboto), sans-serif',
                   fontWeight: 500
@@ -772,7 +811,7 @@ export default function MainLandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-slate-900 text-white py-12 border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -786,7 +825,7 @@ export default function MainLandingPage() {
                 The CoFounder Circle
               </h3>
               <p 
-                className="text-gray-400"
+                className="text-slate-300"
                 style={{
                   fontFamily: 'var(--font-roboto), sans-serif',
                   fontWeight: 400
@@ -805,7 +844,7 @@ export default function MainLandingPage() {
               >
                 Platform
               </h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-slate-300">
                 <li><Link href="/student" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Students</Link></li>
                 <li><Link href="/founder" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Founders</Link></li>
                 <li><Link href="/mentor" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Mentors</Link></li>
@@ -823,7 +862,7 @@ export default function MainLandingPage() {
               >
                 Resources
               </h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-slate-300">
                 <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Help Center</a></li>
                 <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Community</a></li>
                 <li><a href="#" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>Blog</a></li>
@@ -840,7 +879,7 @@ export default function MainLandingPage() {
               >
                 Contact
               </h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-slate-300">
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
                   <span suppressHydrationWarning style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>hello@cofoundercircle.com</span>
@@ -856,7 +895,7 @@ export default function MainLandingPage() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-white/10 mt-8 pt-8 text-center text-slate-300">
             <p style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>&copy; 2024 The CoFounder Circle. All rights reserved.</p>
           </div>
         </div>
