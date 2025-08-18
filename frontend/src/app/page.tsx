@@ -221,6 +221,12 @@ export default function MainLandingPage() {
     if (pendingNavigation) {
       window.location.href = pendingNavigation;
       setPendingNavigation(null);
+    } else {
+      // If no pending navigation, scroll to "Choose Your Path" section
+      const ecosystemSection = document.getElementById('ecosystem');
+      if (ecosystemSection) {
+        ecosystemSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
@@ -251,18 +257,14 @@ export default function MainLandingPage() {
 
   const handleRegisterClick = () => {
     if (user) {
-      // User is authenticated, show profile setup or redirect to dashboard
-      if (!user.user_type) {
-        setShowProfileSetup(true);
-      } else {
-        window.location.href = '/dashboard';
-      }
-    } else {
-      // User is not authenticated, scroll to ecosystem section
+      // User is signed in, scroll to "Choose Your Path" section
       const ecosystemSection = document.getElementById('ecosystem');
       if (ecosystemSection) {
         ecosystemSection.scrollIntoView({ behavior: 'smooth' });
       }
+    } else {
+      // User is not signed in, show sign-in modal
+      setShowSignInModal(true);
     }
   };
 
