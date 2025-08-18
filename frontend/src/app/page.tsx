@@ -86,6 +86,7 @@ export default function MainLandingPage() {
   const [streamingText, setStreamingText] = useState('');
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
+  const [isUserTyping, setIsUserTyping] = useState(false);
   
   const streamingUserTypes = ['student', 'founder', 'mentor', 'vendor', 'working professional'];
   
@@ -98,6 +99,9 @@ export default function MainLandingPage() {
 
   // Text streaming effect
   useEffect(() => {
+    // Only run animation if user is not typing
+    if (isUserTyping) return;
+    
     const currentWord = streamingUserTypes[currentWordIndex];
     
     if (isTyping) {
@@ -126,7 +130,7 @@ export default function MainLandingPage() {
         return () => clearTimeout(timer);
       }
     }
-  }, [streamingText, isTyping, currentWordIndex, streamingUserTypes]);
+  }, [streamingText, isTyping, currentWordIndex, streamingUserTypes, isUserTyping]);
 
   useEffect(() => {
     // Only run on client side
@@ -426,28 +430,43 @@ export default function MainLandingPage() {
             {/* Search Bar */}
             <div className="mb-8 max-w-2xl mx-auto w-full">
               <div className="relative">
-                <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none z-10">
-                  <span style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
-                    I am a{' '}
-                  </span>
-                  <span 
-                    className="text-blue-400"
-                    style={{ 
-                      fontFamily: 'var(--font-roboto), sans-serif', 
-                      fontWeight: 500,
-                      borderRight: '2px solid #60A5FA',
-                      animation: isTyping ? 'blink 1s infinite' : 'none'
-                    }}
-                  >
-                    {streamingText}
-                  </span>
-                </div>
+                {!isUserTyping && (
+                  <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none z-10">
+                    <span style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+                      I am a{' '}
+                    </span>
+                    <span 
+                      className="text-blue-400"
+                      style={{ 
+                        fontFamily: 'var(--font-roboto), sans-serif', 
+                        fontWeight: 500,
+                        borderRight: '2px solid #60A5FA',
+                        animation: isTyping ? 'blink 1s infinite' : 'none'
+                      }}
+                    >
+                      {streamingText}
+                    </span>
+                  </div>
+                )}
                 <input
                   type="text"
                   className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 400
+                  }}
+                  onFocus={() => setIsUserTyping(true)}
+                  onBlur={(e) => {
+                    if (!e.target.value) {
+                      setIsUserTyping(false);
+                    }
+                  }}
+                  onChange={(e) => {
+                    if (e.target.value.length > 0) {
+                      setIsUserTyping(true);
+                    } else {
+                      setIsUserTyping(false);
+                    }
                   }}
                 />
                 <button
