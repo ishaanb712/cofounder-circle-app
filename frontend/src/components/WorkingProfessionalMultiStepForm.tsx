@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import LocationDropdown from './LocationDropdown';
+import YearsDropdown from './YearsDropdown';
 // import { updateUserProfile } from '@/lib/firebase';
 
 interface WorkingProfessionalFormData {
@@ -416,47 +418,25 @@ export default function WorkingProfessionalMultiStepForm({
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6">
       {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          {[1, 2, 3, 4].map((step) => (
-            <div key={step} className="flex items-center flex-1">
-              <div className="flex flex-col items-center">
-                <div
-                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-medium ${
-                    step < currentStep
-                      ? 'bg-blue-500 text-white'
-                      : step === currentStep
-                      ? 'bg-blue-100 text-blue-600 border-2 border-blue-500'
-                      : 'bg-gray-200 text-gray-500'
-                  }`}
-                >
-                  {step < currentStep ? (
-                    <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
-                  ) : (
-                    step
-                  )}
-                </div>
-                <span 
-                  className={`text-xs md:text-sm mt-1 ${
-                    step <= currentStep ? 'text-blue-600' : 'text-gray-400'
-                  }`}
-                  style={{
-                    fontFamily: 'var(--font-roboto), sans-serif',
-                    fontWeight: 500
-                  }}
-                >
-                  Step {step} of 4
-                </span>
-              </div>
-              {step < 4 && (
-                <div 
-                  className={`flex-1 h-0.5 mx-2 ${
-                    step < currentStep ? 'bg-blue-500' : 'bg-gray-200'
-                  }`}
-                />
-              )}
-            </div>
+      <div className="flex flex-col items-center mb-6 md:mb-8">
+        <div className="flex space-x-2 mb-2">
+          {Array.from({ length: totalSteps }, (_, i) => (
+            <div
+              key={i + 1}
+              className={`w-3 h-3 rounded-full ${
+                i + 1 <= currentStep ? 'bg-blue-500' : 'bg-gray-300'
+              }`}
+            />
           ))}
+        </div>
+        <div 
+          className="text-center text-sm text-gray-600"
+          style={{
+            fontFamily: 'var(--font-roboto), sans-serif',
+            fontWeight: 500
+          }}
+        >
+          Step {currentStep} of {totalSteps}
         </div>
       </div>
 
@@ -569,7 +549,7 @@ function PersonalCareerStep({
               fontWeight: 400
             }}
           />
-          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+          {errors.name && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.name}</p>}
         </div>
         
         <div>
@@ -593,7 +573,7 @@ function PersonalCareerStep({
               fontWeight: 400
             }}
           />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          {errors.email && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.email}</p>}
         </div>
         
         <div>
@@ -617,7 +597,7 @@ function PersonalCareerStep({
               fontWeight: 400
             }}
           />
-          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+          {errors.phone && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.phone}</p>}
         </div>
         
         <div>
@@ -630,18 +610,14 @@ function PersonalCareerStep({
           >
             City *
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.city}
-            onChange={(e) => handleFieldChange('city', e.target.value)}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base"
-            placeholder="Enter your city"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(city: string) => handleFieldChange('city', city)}
+            placeholder="Select your city"
+            className="w-full"
+            type="all"
           />
-          {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+          {errors.city && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.city}</p>}
         </div>
         
         <div>
@@ -654,16 +630,13 @@ function PersonalCareerStep({
           >
             State
           </label>
-          <input
-            type="text"
+          <LocationDropdown
             value={formData.state}
-            onChange={(e) => handleFieldChange('state', e.target.value)}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500 text-sm md:text-base"
-            placeholder="Enter your state"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
+            onChange={(state: string) => handleFieldChange('state', state)}
+            placeholder="Select your state"
+            className="w-full"
+            type="state"
+            country="India"
           />
         </div>
         
@@ -677,27 +650,15 @@ function PersonalCareerStep({
           >
             Years of Experience *
           </label>
-          <select
+          <YearsDropdown
             value={formData.years_of_experience}
-            onChange={(e) => handleFieldChange('years_of_experience', parseInt(e.target.value))}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 text-sm md:text-base"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
-          >
-            <option value={0}>Select years of experience</option>
-            <option value={1}>1 year</option>
-            <option value={2}>2 years</option>
-            <option value={3}>3 years</option>
-            <option value={4}>4 years</option>
-            <option value={5}>5 years</option>
-            <option value={6}>6 years</option>
-            <option value={7}>7 years</option>
-            <option value={8}>8 years</option>
-            <option value={9}>9 years</option>
-            <option value={10}>10+ years</option>
-          </select>
+            onChange={(years) => handleFieldChange('years_of_experience', years)}
+            placeholder="Select years of experience"
+            className="w-full"
+            startYear={1}
+            endYear={10}
+          />
+          {errors.years_of_experience && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.years_of_experience}</p>}
         </div>
       </div>
 
@@ -723,7 +684,7 @@ function PersonalCareerStep({
               fontWeight: 400
             }}
           />
-          {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
+          {errors.role && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.role}</p>}
         </div>
         
         <div>
@@ -747,7 +708,7 @@ function PersonalCareerStep({
               fontWeight: 400
             }}
           />
-          {errors.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
+          {errors.company && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.company}</p>}
         </div>
         
         <div>
@@ -771,7 +732,7 @@ function PersonalCareerStep({
             }}
             placeholder="https://linkedin.com/in/..."
           />
-          {errors.linkedin && <p className="text-red-500 text-sm mt-1">{errors.linkedin}</p>}
+          {errors.linkedin && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.linkedin}</p>}
         </div>
       </div>
     </div>
@@ -852,7 +813,7 @@ function StartupInterestStep({
               </button>
             ))}
           </div>
-          {errors.startup_interest && <p className="text-red-500 text-sm mt-1">{errors.startup_interest}</p>}
+          {errors.startup_interest && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.startup_interest}</p>}
         </div>
         
         <div>
@@ -885,7 +846,7 @@ function StartupInterestStep({
               </button>
             ))}
           </div>
-          {errors.startup_exposure && <p className="text-red-500 text-sm mt-1">{errors.startup_exposure}</p>}
+          {errors.startup_exposure && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.startup_exposure}</p>}
         </div>
       </div>
     </div>
@@ -966,7 +927,7 @@ function SkillsDomainsStep({
               </button>
             ))}
           </div>
-          {errors.functional_expertise && <p className="text-red-500 text-sm mt-1">{errors.functional_expertise}</p>}
+          {errors.functional_expertise && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.functional_expertise}</p>}
         </div>
         
         <div>
@@ -999,7 +960,7 @@ function SkillsDomainsStep({
               </button>
             ))}
           </div>
-          {errors.industry_knowledge && <p className="text-red-500 text-sm mt-1">{errors.industry_knowledge}</p>}
+          {errors.industry_knowledge && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.industry_knowledge}</p>}
         </div>
         
         <div>
@@ -1023,7 +984,7 @@ function SkillsDomainsStep({
               fontWeight: 400
             }}
           />
-          {errors.resume_url && <p className="text-red-500 text-sm mt-1">{errors.resume_url}</p>}
+          {errors.resume_url && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.resume_url}</p>}
         </div>
       </div>
     </div>
@@ -1104,7 +1065,7 @@ function PreferencesStep({
               </button>
             ))}
           </div>
-          {errors.availability && <p className="text-red-500 text-sm mt-1">{errors.availability}</p>}
+          {errors.availability && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.availability}</p>}
         </div>
         
         <div>
@@ -1137,7 +1098,7 @@ function PreferencesStep({
               </button>
             ))}
           </div>
-          {errors.compensation_model && <p className="text-red-500 text-sm mt-1">{errors.compensation_model}</p>}
+          {errors.compensation_model && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.compensation_model}</p>}
         </div>
         
         <div>
@@ -1170,7 +1131,7 @@ function PreferencesStep({
               </button>
             ))}
           </div>
-          {errors.stage_preference && <p className="text-red-500 text-sm mt-1">{errors.stage_preference}</p>}
+          {errors.stage_preference && <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.stage_preference}</p>}
         </div>
       </div>
     </div>
