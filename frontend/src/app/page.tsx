@@ -432,14 +432,15 @@ export default function MainLandingPage() {
               <div className="relative">
                 {!isUserTyping && (
                   <div className="absolute left-6 top-1/2 transform -translate-y-1/2 text-white/60 pointer-events-none z-10">
-                    <span style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>
+                    <span style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400, fontSize: '18px' }}>
                       I am a{' '}
                     </span>
                     <span 
                       className="text-blue-400"
                       style={{ 
                         fontFamily: 'var(--font-roboto), sans-serif', 
-                        fontWeight: 500,
+                        fontWeight: 400,
+                        fontSize: '18px',
                         borderRight: '2px solid #60A5FA',
                         animation: isTyping ? 'blink 1s infinite' : 'none'
                       }}
