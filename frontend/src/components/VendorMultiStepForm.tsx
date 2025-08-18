@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react';
+import LocationDropdown from './LocationDropdown';
+import YearsDropdown from './YearsDropdown';
 // import { updateUserProfile } from '@/lib/firebase';
 
 interface VendorFormData {
@@ -362,36 +364,22 @@ export default function VendorMultiStepForm({
   return (
     <div className="w-full max-w-lg mx-auto">
       {/* Progress Bar */}
-      <div className="mb-6 md:mb-8">
-        <div className="flex items-center justify-between mb-3 md:mb-4">
-          {[1, 2, 3, 4, 5].map((step) => (
-            <div key={step} className="flex items-center flex-1">
-              <div className={`flex items-center justify-center w-6 h-6 md:w-8 md:h-8 rounded-full border-2 ${
-                step < currentStep 
-                  ? 'bg-purple-600 border-purple-600 text-white' 
-                  : step === currentStep
-                  ? 'bg-purple-600 border-purple-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-500'
-              }`}>
-                {step < currentStep ? (
-                  <CheckCircle className="w-3 h-3 md:w-5 md:h-5" />
-                ) : (
-                  <span className="text-xs md:text-sm font-medium">{step}</span>
-                )}
-              </div>
-              {step < 5 && (
-                <div className={`flex-1 h-0.5 md:h-1 mx-1 md:mx-2 ${
-                  step < currentStep ? 'bg-purple-600' : 'bg-gray-300'
-                }`} />
-              )}
-            </div>
+      <div className="flex flex-col items-center mb-6 md:mb-8">
+        <div className="flex space-x-2 mb-2">
+          {Array.from({ length: totalSteps }, (_, i) => (
+            <div
+              key={i + 1}
+              className={`w-3 h-3 rounded-full ${
+                i + 1 <= currentStep ? 'bg-purple-600' : 'bg-gray-300'
+              }`}
+            />
           ))}
         </div>
         <div 
-          className="text-center text-xs md:text-sm text-gray-600"
+          className="text-center text-sm text-gray-600"
           style={{
             fontFamily: 'var(--font-roboto), sans-serif',
-            fontWeight: 400
+            fontWeight: 500
           }}
         >
           Step {currentStep} of {totalSteps}
@@ -518,7 +506,7 @@ function BusinessInfoStep({
             }}
           />
           {errors.business_name && (
-            <p className="text-red-500 text-sm mt-1">{errors.business_name}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.business_name}</p>
           )}
         </div>
         
@@ -544,7 +532,7 @@ function BusinessInfoStep({
             }}
           />
           {errors.url && (
-            <p className="text-red-500 text-sm mt-1">{errors.url}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.url}</p>
           )}
         </div>
         
@@ -605,7 +593,7 @@ function BusinessInfoStep({
             </button>
           </div>
           {errors.category && (
-            <p className="text-red-500 text-sm mt-1">{errors.category}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.category}</p>
           )}
         </div>
         
@@ -619,21 +607,16 @@ function BusinessInfoStep({
           >
             Years in Operation
           </label>
-          <select
+          <YearsDropdown
             value={formData.years_of_experience}
-            onChange={(e) => updateFormData('years_of_experience', parseInt(e.target.value))}
-            className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-900 text-sm md:text-base"
-            style={{
-              fontFamily: 'var(--font-roboto), sans-serif',
-              fontWeight: 400
-            }}
-          >
-            {Array.from({ length: 20 }, (_, i) => i + 1).map(year => (
-              <option key={year} value={year}>{year} year{year !== 1 ? 's' : ''}</option>
-            ))}
-          </select>
+            onChange={(years) => updateFormData('years_of_experience', years)}
+            placeholder="Select years in operation"
+            className="w-full"
+            startYear={1}
+            endYear={20}
+          />
           {errors.years_of_experience && (
-            <p className="text-red-500 text-sm mt-1">{errors.years_of_experience}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.years_of_experience}</p>
           )}
         </div>
         
@@ -668,7 +651,7 @@ function BusinessInfoStep({
             ))}
           </div>
           {errors.locations && (
-            <p className="text-red-500 text-sm mt-1">{errors.locations}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.locations}</p>
           )}
         </div>
         
@@ -703,7 +686,7 @@ function BusinessInfoStep({
             ))}
           </div>
           {errors.team_size && (
-            <p className="text-red-500 text-sm mt-1">{errors.team_size}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.team_size}</p>
           )}
         </div>
       </div>
@@ -769,7 +752,7 @@ function FounderContactStep({
             }}
           />
           {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.name}</p>
           )}
         </div>
         
@@ -795,7 +778,7 @@ function FounderContactStep({
             }}
           />
           {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.email}</p>
           )}
         </div>
         
@@ -821,7 +804,7 @@ function FounderContactStep({
             }}
           />
           {errors.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.phone}</p>
           )}
         </div>
       </div>
@@ -1108,7 +1091,7 @@ function EngagementDetailsStep({
             }}
           />
           {errors.minimum_project_value && (
-            <p className="text-red-500 text-sm mt-1">{errors.minimum_project_value}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.minimum_project_value}</p>
           )}
         </div>
         
@@ -1134,7 +1117,7 @@ function EngagementDetailsStep({
             }}
           />
           {errors.tat && (
-            <p className="text-red-500 text-sm mt-1">{errors.tat}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.tat}</p>
           )}
         </div>
         
@@ -1169,7 +1152,7 @@ function EngagementDetailsStep({
             ))}
           </div>
           {errors.working_model && (
-            <p className="text-red-500 text-sm mt-1">{errors.working_model}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.working_model}</p>
           )}
         </div>
       </div>
@@ -1252,7 +1235,7 @@ function GoalsStep({
             ))}
           </div>
           {errors.goals && (
-            <p className="text-red-500 text-sm mt-1">{errors.goals}</p>
+            <p className="text-red-500 text-sm mt-1" style={{ fontFamily: 'var(--font-roboto), sans-serif', fontWeight: 400 }}>{errors.goals}</p>
           )}
         </div>
       </div>
