@@ -10,3 +10,4 @@ pydantic-settings>=2.4.0
 httpx>=0.26
 supabase>=2.0.0
 email-validator>=2.0.0
+openai>=1.0.0

@@ -10,7 +10,7 @@ import os
 # Load environment variables FIRST
 load_dotenv()
 
-from app.api.routes import auth, users, students, founders, mentors, vendors, working_professionals, user_profiles, sessions
+from app.api.routes import auth, users, students, founders, mentors, vendors, working_professionals, user_profiles, sessions, ai_search
 from app.core.config import settings
 from app.core.performance import PerformanceMiddleware
 
@@ -98,6 +98,7 @@ app.include_router(students.router, prefix="/api/students", tags=["Students"])
 app.include_router(founders.router, prefix="/api/founders", tags=["Founders"])
 app.include_router(mentors.router, prefix="/api/mentors", tags=["Mentors"])
 app.include_router(vendors.router, prefix="/api/vendors", tags=["Vendors"])
+app.include_router(ai_search.router, prefix="/api", tags=["AI Search"])
 app.include_router(working_professionals.router, prefix="/api/working-professionals", tags=["Working Professionals"])
 app.include_router(user_profiles.router, prefix="/api/user-profiles", tags=["User Profiles"])
 app.include_router(sessions.router, prefix="/api/sessions", tags=["Sessions"])

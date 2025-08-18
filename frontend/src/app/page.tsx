@@ -88,6 +88,10 @@ export default function MainLandingPage() {
   const [isTyping, setIsTyping] = useState(true);
   const [isUserTyping, setIsUserTyping] = useState(false);
   
+  // AI Search state
+  const [searchValue, setSearchValue] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  
   const streamingUserTypes = ['student', 'founder', 'mentor', 'vendor', 'working professional'];
   
   // Performance monitoring
@@ -131,6 +135,44 @@ export default function MainLandingPage() {
       }
     }
   }, [streamingText, isTyping, currentWordIndex, streamingUserTypes, isUserTyping]);
+
+  // AI Search function
+  const handleAISearch = async (searchText: string) => {
+    if (!searchText.trim()) return;
+    
+    setIsSearching(true);
+    try {
+      const response = await fetch('/api/ai-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_input: searchText }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Redirect to the appropriate page
+        window.location.href = data.redirect_url;
+      } else {
+        console.error('AI search failed');
+        // Fallback: scroll to ecosystem section
+        const ecosystemSection = document.getElementById('ecosystem');
+        if (ecosystemSection) {
+          ecosystemSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    } catch (error) {
+      console.error('Error during AI search:', error);
+      // Fallback: scroll to ecosystem section
+      const ecosystemSection = document.getElementById('ecosystem');
+      if (ecosystemSection) {
+        ecosystemSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   useEffect(() => {
     // Only run on client side
@@ -454,6 +496,7 @@ export default function MainLandingPage() {
                 )}
                 <input
                   type="text"
+                  value={searchValue}
                   className="w-full px-6 py-4 rounded-full text-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all duration-300"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
@@ -466,21 +509,29 @@ export default function MainLandingPage() {
                     }
                   }}
                   onChange={(e) => {
+                    setSearchValue(e.target.value);
                     if (e.target.value.length > 0) {
                       setIsUserTyping(true);
                     } else {
                       setIsUserTyping(false);
                     }
                   }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAISearch(searchValue);
+                    }
+                  }}
                 />
                 <button
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                  onClick={() => handleAISearch(searchValue)}
+                  disabled={isSearching}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     fontFamily: 'var(--font-roboto), sans-serif',
                     fontWeight: 500
                   }}
                 >
-                  Search
+                  {isSearching ? 'Searching...' : 'Search'}
                 </button>
                 <style jsx>{`
                   @keyframes blink {
