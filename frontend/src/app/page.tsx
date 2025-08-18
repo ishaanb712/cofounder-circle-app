@@ -746,7 +746,7 @@ export default function MainLandingPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
             {userTypes.map((userType, index) => (
               <motion.div
                 key={userType.id}
@@ -756,7 +756,9 @@ export default function MainLandingPage() {
                 viewport={{ once: true }}
                 onHoverStart={() => setHoveredCard(userType.id)}
                 onHoverEnd={() => setHoveredCard(null)}
-                className="relative group"
+                className={`relative group ${
+                  index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'
+                }`}
               >
                 <div 
                   onClick={() => handleCardClick(userType.href)}
