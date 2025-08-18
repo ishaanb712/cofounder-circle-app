@@ -431,75 +431,7 @@ export default function MainLandingPage() {
         {/* Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" />
         
-        {/* Startup Ecosystem Doodles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* Growth Chart - Success & Growth */}
-          <svg className="absolute top-20 left-10 w-32 h-32 opacity-12" viewBox="0 0 100 100">
-            <path d="M15,85 L30,65 L45,45 L60,25 L85,15" stroke="white" strokeWidth="2" fill="none" opacity="0.5"/>
-            <circle cx="30" cy="65" r="3" fill="white" opacity="0.6"/>
-            <circle cx="45" cy="45" r="3" fill="white" opacity="0.6"/>
-            <circle cx="60" cy="25" r="3" fill="white" opacity="0.6"/>
-            <circle cx="85" cy="15" r="3" fill="white" opacity="0.6"/>
-            <path d="M85,15 L90,10 L85,5" stroke="white" strokeWidth="1" opacity="0.4"/>
-          </svg>
-          
-          {/* Speed Lines - Acceleration & Speed */}
-          <svg className="absolute top-32 right-20 w-28 h-28 opacity-10" viewBox="0 0 100 100">
-            <path d="M20,20 L40,25 L60,30 L80,35" stroke="white" strokeWidth="1" fill="none" opacity="0.4"/>
-            <path d="M20,40 L40,45 L60,50 L80,55" stroke="white" strokeWidth="1" fill="none" opacity="0.4"/>
-            <path d="M20,60 L40,65 L60,70 L80,75" stroke="white" strokeWidth="1" fill="none" opacity="0.4"/>
-            <circle cx="85" cy="40" r="8" fill="white" opacity="0.3"/>
-          </svg>
-          
-          {/* Startup Building - Work & Startup */}
-          <svg className="absolute bottom-32 left-20 w-24 h-24 opacity-12" viewBox="0 0 100 100">
-            <rect x="20" y="40" width="60" height="40" fill="white" opacity="0.3"/>
-            <rect x="25" y="30" width="50" height="10" fill="white" opacity="0.4"/>
-            <rect x="30" y="20" width="40" height="10" fill="white" opacity="0.5"/>
-            <rect x="35" y="10" width="30" height="10" fill="white" opacity="0.6"/>
-            <rect x="35" y="50" width="8" height="20" fill="white" opacity="0.4"/>
-            <rect x="57" y="50" width="8" height="20" fill="white" opacity="0.4"/>
-            <rect x="45" y="60" width="10" height="10" fill="white" opacity="0.3"/>
-          </svg>
-          
-          {/* Education Stack - Student & Education */}
-          <svg className="absolute bottom-20 right-32 w-26 h-26 opacity-10" viewBox="0 0 100 100">
-            <rect x="25" y="70" width="50" height="8" fill="white" opacity="0.4"/>
-            <rect x="30" y="60" width="40" height="8" fill="white" opacity="0.5"/>
-            <rect x="35" y="50" width="30" height="8" fill="white" opacity="0.6"/>
-            <rect x="40" y="40" width="20" height="8" fill="white" opacity="0.7"/>
-            <rect x="45" y="30" width="10" height="8" fill="white" opacity="0.8"/>
-            <path d="M20,70 L80,70" stroke="white" strokeWidth="1" opacity="0.3"/>
-          </svg>
-          
-          {/* Success Trophy - Success & Achievement */}
-          <svg className="absolute top-1/2 left-1/4 w-20 h-20 opacity-12" viewBox="0 0 100 100">
-            <ellipse cx="50" cy="25" rx="15" ry="8" fill="white" opacity="0.4"/>
-            <rect x="45" y="25" width="10" height="25" fill="white" opacity="0.5"/>
-            <rect x="35" y="50" width="30" height="8" fill="white" opacity="0.4"/>
-            <rect x="40" y="58" width="20" height="8" fill="white" opacity="0.3"/>
-            <rect x="45" y="66" width="10" height="8" fill="white" opacity="0.2"/>
-            <circle cx="50" cy="20" r="3" fill="white" opacity="0.6"/>
-          </svg>
-          
-          {/* Work Tools - Work & Professional */}
-          <svg className="absolute top-1/3 right-1/3 w-22 h-22 opacity-10" viewBox="0 0 100 100">
-            <rect x="30" y="40" width="40" height="25" fill="white" opacity="0.3"/>
-            <rect x="35" y="30" width="30" height="10" fill="white" opacity="0.4"/>
-            <rect x="40" y="50" width="20" height="10" fill="white" opacity="0.3"/>
-            <rect x="45" y="35" width="10" height="10" fill="white" opacity="0.2"/>
-            <path d="M25,50 L35,50" stroke="white" strokeWidth="2" opacity="0.4"/>
-            <path d="M25,60 L35,60" stroke="white" strokeWidth="2" opacity="0.4"/>
-          </svg>
-          
-          {/* Acceleration Arrows - Speed & Growth */}
-          <svg className="absolute bottom-1/3 left-1/3 w-18 h-18 opacity-8" viewBox="0 0 100 100">
-            <path d="M20,80 L40,60 L60,40 L80,20" stroke="white" strokeWidth="2" fill="none" opacity="0.4"/>
-            <path d="M75,25 L80,20 L75,15" stroke="white" strokeWidth="1" opacity="0.5"/>
-            <path d="M55,45 L60,40 L55,35" stroke="white" strokeWidth="1" opacity="0.5"/>
-            <path d="M35,65 L40,60 L35,55" stroke="white" strokeWidth="1" opacity="0.5"/>
-          </svg>
-        </div>
+
         
         {/* Content Overlay */}
         <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
